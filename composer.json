@@ -1,0 +1,31 @@
+{
+  "$schema": "https://getcomposer.org/schema.json",
+  "name": "isaeken/brick-engine",
+  "description": "A simple language engine for your templates.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Isa Eken",
+      "email": "hello@isaeken.com.tr",
+      "homepage": "https://isaeken.com.tr",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "IsaEken\\BrickEngine\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "IsaEken\\BrickEngine\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^7.2"
+  }
+}

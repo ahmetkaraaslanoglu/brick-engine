@@ -1,0 +1,55 @@
+asd = 1 + asd(1,2,3) + 2 + asd;
+
+a = "he\\llo \"\n";
+a += "world";
+echo(a);
+echo(asd);
+
+if (asd && true) {
+    echo("hello \"\nworld ");
+}
+
+
+array = [1,2,3,"asd"];
+echo('ok');
+array = [2 => 3, "3" => true,];
+array = [1,...array,20,15];
+echo(array[4], " ");
+
+value = 0;
+while (value < 10) {
+    echo(' sa ' + value);
+    value += 1;
+}
+
+if (false) {
+    echo(' sa qwe');
+} else {
+    echo(' as asd ');
+}
+
+echo(' ');
+
+function deneme(asd,qwe="asdqweasdsafasdfwer") {
+    return asd + qwe + 'asdasd';
+}
+
+echo(deneme("321aksdjfklsjdflajsdflajsdlf"));
+
+for (i = 0; i < 10; i += 1) {
+    echo(i);
+}
+
+items = ["asd"=>"item1", 1=>"item2", 2=>"item3"];
+foreach (items as key => item) {
+    echo(key + " => " + item);
+}
+items = ["asd"=>"item1", 1=>"item2", 2=>"item3asdasd"];
+foreach (items as item) {
+    echo(item + "-----");
+}
+
+qweqwe2qwe = "123asd";
+echo(qweqwe2qwe);
+
+return qweqwe2qwe;
