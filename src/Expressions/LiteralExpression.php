@@ -45,6 +45,13 @@ class LiteralExpression extends Node implements ExpressionInterface
             );
         }
 
+        if ($this->literal === 'NULL') {
+            return new Value(
+                type: ValueType::Null,
+                data: null,
+            );
+        }
+
         throw new InvalidLiteralException($this->literal);
     }
 }
