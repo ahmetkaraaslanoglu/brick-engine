@@ -7,9 +7,8 @@ use IsaEken\BrickEngine\Runtime\Context;
 
 class BrickEngine
 {
-    public function __construct(
-        public Context $context = new Context,
-    ) {
+    public function __construct(public Context $context = new Context)
+    {
         // ...
     }
 

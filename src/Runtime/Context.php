@@ -3,6 +3,7 @@
 namespace IsaEken\BrickEngine\Runtime;
 
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
 use IsaEken\BrickEngine\Value;
 
 class Context
@@ -22,7 +23,7 @@ class Context
         if ($value->is(ValueType::Identifier)) {
             $identifier = $value->data;
             if (! array_key_exists($identifier, $this->variables)) {
-                throw new \Exception("Variable not found: {$identifier}");
+                throw new VariableNotFoundException($identifier);
             }
 
             return $this->variables[$identifier];

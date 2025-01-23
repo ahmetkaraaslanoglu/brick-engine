@@ -4,6 +4,7 @@ namespace IsaEken\BrickEngine\Expressions;
 
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\InvalidLiteralException;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
@@ -44,7 +45,6 @@ class LiteralExpression extends Node implements ExpressionInterface
             );
         }
 
-        // @todo Implement other literal types and real exceptions.
-        throw new \Exception('Unknown literal type.');
+        throw new InvalidLiteralException($this->literal);
     }
 }

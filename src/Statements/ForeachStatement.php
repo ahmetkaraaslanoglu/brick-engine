@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Statements;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\InvalidForeachTargetException;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
@@ -28,7 +29,7 @@ class ForeachStatement extends Node implements StatementInterface
         $right = $this->right->run($context);
 
         if (! $context->variables[$left->data]->is(ValueType::Array)) {
-            throw new \Exception("Left side of foreach statement must be an array.");
+            throw new InvalidForeachTargetException("Left side of foreach statement must be an array.");
         }
 
         $result = null;

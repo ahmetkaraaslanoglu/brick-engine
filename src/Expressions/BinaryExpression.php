@@ -4,6 +4,9 @@ namespace IsaEken\BrickEngine\Expressions;
 
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\InvalidLeftSideTargetException;
+use IsaEken\BrickEngine\Exceptions\UnsupportedException;
+use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
@@ -34,11 +37,11 @@ class BinaryExpression extends Node implements ExpressionInterface
 
         if ($operator == '+=') {
             if (! $this->left instanceof IdentifierExpression) {
-                throw new \Exception("Left side of += operator must be a variable.");
+                throw new InvalidLeftSideTargetException();
             }
 
             if (! array_key_exists($this->left->value, $context->variables)) {
-                throw new \Exception("Variable not found: {$this->left->value}");
+                throw new VariableNotFoundException($this->left->value);
             }
 
             if ($context->variables[$this->left->value]->is(ValueType::String) || $right->is(ValueType::String)) {
@@ -61,7 +64,7 @@ class BinaryExpression extends Node implements ExpressionInterface
             return $this->compare($left, $right, $operator);
         }
 
-        throw new \Exception("Unknown operator: {$operator}");
+        throw new UnsupportedException("Unsupported operator: {$operator}");
     }
 
     private function calculate(Value $left, Value $right, string $operator): Value
@@ -72,7 +75,7 @@ class BinaryExpression extends Node implements ExpressionInterface
             '*' => $left->data * $right->data,
             '/' => $left->data / $right->data,
             '%' => $left->data % $right->data,
-            default => throw new \Exception("Unknown operator: {$operator}"),
+            default => throw new UnsupportedException("Unsupported operator: {$operator}"),
         });
     }
 
@@ -91,7 +94,7 @@ class BinaryExpression extends Node implements ExpressionInterface
             '!==' => $left->data !== $right->data,
             '??' => $left->data ?? $right->data,
             '?:' => $left->data ?: $right->data,
-            default => throw new \Exception("Unknown operator: {$operator}"),
+            default => throw new UnsupportedException("Unsupported operator: {$operator}"),
         });
     }
 
@@ -101,7 +104,7 @@ class BinaryExpression extends Node implements ExpressionInterface
         if ($object instanceof IdentifierExpression) {
             $identifier = $object->value;
             if (! array_key_exists($identifier, $context->variables)) {
-                throw new \Exception("Variable not found: {$identifier}");
+                throw new VariableNotFoundException($identifier);
             }
 
             return $context->variables[$identifier];

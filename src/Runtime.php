@@ -3,6 +3,7 @@
 namespace IsaEken\BrickEngine;
 
 use IsaEken\BrickEngine\Contracts\StatementInterface;
+use IsaEken\BrickEngine\Exceptions\IgnorableException;
 use IsaEken\BrickEngine\Runtime\Context;
 
 class Runtime
@@ -14,10 +15,14 @@ class Runtime
         //
     }
 
-    public function run()
+    public function run(): ExecutionResult
     {
-        return $this->program->run(
-            $this->context,
-        );
+        try {
+            return $this->program->run(
+                $this->context,
+            );
+        } catch (IgnorableException $ignorableException) {
+            dump($ignorableException);
+        }
     }
 }

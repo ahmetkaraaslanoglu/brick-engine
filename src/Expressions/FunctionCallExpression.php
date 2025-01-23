@@ -4,6 +4,7 @@ namespace IsaEken\BrickEngine\Expressions;
 
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\FunctionNotFoundException;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
@@ -30,7 +31,7 @@ class FunctionCallExpression extends Node implements ExpressionInterface
         }
 
         if (! array_key_exists($callee, $context->functions)) {
-            throw new \Exception("Function not found: {$callee}");
+            throw new FunctionNotFoundException($callee);
         }
 
         $value = $context->functions[$callee](...$arguments);

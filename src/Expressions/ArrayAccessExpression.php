@@ -4,6 +4,8 @@ namespace IsaEken\BrickEngine\Expressions;
 
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\ArrayKeyNotFoundException;
+use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 use IsaEken\BrickEngine\Value;
@@ -25,7 +27,7 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
         $this->assertType($this->index, [IdentifierExpression::class, LiteralExpression::class]);
 
         if (! array_key_exists($this->identifier->value, $context->variables)) {
-            throw new \Exception("Variable not found: {$this->identifier->value}");
+            throw new VariableNotFoundException($this->identifier->value);
         }
 
         $index = $this->index ? $this->index->run($context)?->data : null;
@@ -35,7 +37,7 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
             return $array[$index];
         }
 
-        // @todo throw exception
+        // throw new ArrayKeyNotFoundException(); @todo: throw this as an warning
 
         return new Value(ValueType::Null);
     }

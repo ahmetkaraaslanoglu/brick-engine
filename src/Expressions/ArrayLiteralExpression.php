@@ -4,6 +4,7 @@ namespace IsaEken\BrickEngine\Expressions;
 
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
@@ -29,7 +30,7 @@ class ArrayLiteralExpression extends Node implements ExpressionInterface
 
             if ($element['spread']) {
                 if (! array_key_exists($element['value']->data, $context->variables)) {
-                    throw new \Exception("Variable not found: {$element['value']}");
+                    throw new VariableNotFoundException($element['value']->data);
                 }
 
                 foreach ($context->variables[$element['value']->data] as $key => $value) {
