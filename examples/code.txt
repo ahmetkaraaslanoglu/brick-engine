@@ -52,4 +52,14 @@ foreach (items as item) {
 qweqwe2qwe = "123asd";
 echo(qweqwe2qwe);
 
+dump(null);
+dump(123);
+dump('asd');
+dump(true);
+dump([1,2,3]);
+dump([1=>1,2=>2,3=>3]);
+
+response = fetch('https://jsonplaceholder.typicode.com/todos/1');
+dump(response);
+
 return qweqwe2qwe;

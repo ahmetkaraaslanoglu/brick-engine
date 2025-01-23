@@ -3,6 +3,7 @@
 namespace IsaEken\BrickEngine;
 
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Exceptions\InternalCriticalException;
 
 class Value
 {
@@ -34,5 +35,81 @@ class Value
 
             default => false,
         };
+    }
+
+    public function __toString(): string
+    {
+        if ($this->type === ValueType::Null) {
+            return 'null';
+        }
+
+        if ($this->type === ValueType::Numeric) {
+            return sprintf('num(%s)', $this->data);
+        }
+
+        if ($this->type === ValueType::String) {
+            return sprintf('str(%s) "%s"', strlen($this->data), $this->data);
+        }
+
+        if ($this->type === ValueType::Boolean) {
+            return sprintf('bool(%s)', $this->data ? 'true' : 'false');
+        }
+
+        if ($this->type === ValueType::Array) {
+            $items = [];
+            foreach ($this->data as $key => $item) {
+                $items[] = sprintf('  [%s] => %s', $key, $item);
+            }
+
+            return sprintf("array(%s) [\n%s\n]", count($this->data), implode("\n", $items));
+        }
+
+        if ($this->type === ValueType::Function) {
+            return 'function';
+        }
+
+        if ($this->type === ValueType::Void) {
+            return 'void';
+        }
+
+        if ($this->type === ValueType::Identifier) {
+            $value = $this->data;
+            if ($this->data instanceof Value) {
+                $value = $this->data->value;
+            }
+
+            return sprintf('id(%s) "%s"', $this->data, $value);
+        }
+
+        return sprintf('UNKNOWN(%s)', $this->type->value);
+    }
+
+    public static function from(mixed $value): Value
+    {
+        if (is_bool($value)) {
+            return new Value(ValueType::Boolean, $value);
+        }
+
+        if (is_numeric($value)) {
+            return new Value(ValueType::Numeric, $value);
+        }
+
+        if (is_string($value)) {
+            return new Value(ValueType::String, $value);
+        }
+
+        if (is_array($value)) {
+            $items = array_map(function ($item) {
+                return Value::from($item);
+            }, $value);
+
+            return new Value(ValueType::Array, $items);
+        }
+
+        if ($value === null) {
+            return new Value(ValueType::Null);
+        }
+
+        throw new InternalCriticalException("Unsupported value type: " . gettype($value));
     }
 }
