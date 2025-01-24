@@ -62,4 +62,7 @@ dump([1=>1,2=>2,3=>3]);
 response = fetch('https://jsonplaceholder.typicode.com/todos/1');
 dump(response);
 
-return qweqwe2qwe;
+json = json_decode(response);
+dump(json);
+
+return json['title'];

@@ -3,6 +3,7 @@
 namespace IsaEken\BrickEngine;
 
 use IsaEken\BrickEngine\Extensions\HttpExtension;
+use IsaEken\BrickEngine\Extensions\JsonExtension;
 use IsaEken\BrickEngine\Extensions\VarDumperExtension;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Runtime\Context;
@@ -12,6 +13,7 @@ class BrickEngine
     public const array EXTENSIONS = [
         HttpExtension::class,
         VarDumperExtension::class,
+        JsonExtension::class,
     ];
 
     public function __construct(public Context $context = new Context)

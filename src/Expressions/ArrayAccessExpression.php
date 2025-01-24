@@ -33,6 +33,10 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
         $index = $this->index ? $this->index->run($context)?->data : null;
         $array = $context->variables[$this->identifier->data['value']]->data;
 
+        if (! is_array($array)) {
+            throw new ArrayKeyNotFoundException();
+        }
+
         if (array_key_exists($index, $array)) {
             return $array[$index];
         }
