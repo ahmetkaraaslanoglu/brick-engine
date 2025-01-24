@@ -20,8 +20,10 @@ test('can parse array access with numeric index', function () {
     $parser = new Parser($tokens, $content);
     $expression = $parser->parseIdentifierOrArrayAccess();
 
-    expect($expression)->toBeInstanceOf(ArrayAccessExpression::class);
-    expect($expression->run($engine->context)->data)->toBe(42);
+    expect($expression)
+        ->toBeInstanceOf(ArrayAccessExpression::class)
+        ->and($expression->run($engine->context)->data)
+        ->toBe(42);
 });
 
 test('can parse array access with index', function () {
@@ -40,6 +42,8 @@ test('can parse array access with index', function () {
     $parser = new Parser($tokens, $content);
     $expression = $parser->parseIdentifierOrArrayAccess();
 
-    expect($expression)->toBeInstanceOf(ArrayAccessExpression::class);
-    expect($expression->run($engine->context)->data)->toBe(20);
+    expect($expression)
+        ->toBeInstanceOf(ArrayAccessExpression::class)
+        ->and($expression->run($engine->context)->data)
+        ->toBe(20);
 });
