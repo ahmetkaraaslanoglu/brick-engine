@@ -17,11 +17,16 @@ class UnexpectedTokenException extends InvalidSyntaxException
 
     private function update(): string
     {
+        $content = $this->content;
+        $start = $this->start;
+        $end = $this->end;
+        $expected = $this->expected;
+        $got = $this->got;
         $line = 1;
         $column = 1;
 
-        for ($i = 0; $i < $this->start; $i++) {
-            if (($this->content[$i] ?? '') === "\n") {
+        for ($i = 0; $i < $start; $i++) {
+            if (($content[$i] ?? '') === "\n") {
                 $line++;
                 $column = 1;
             } else {
@@ -29,9 +34,9 @@ class UnexpectedTokenException extends InvalidSyntaxException
             }
         }
 
-        $char = $this->content[$this->start] ?? '';
-        $code = explode("\n", $this->content)[$line - 1] ?? null;
-        $message = "Unexpected character \"{$char}\" at line {$line}, column {$column}.";
+        $char = $content[$start] ?? '';
+        $code = explode("\n", $content)[$line - 1] ?? null;
+        $message = "Unexpected token '{$got}', expected '{$expected}' on line {$line} column {$column}";
         if ($code && $line && $column) {
             $message .= "\n\n" . $code . "\n" . str_repeat(' ', $column - 1) . "^\n";
         }
