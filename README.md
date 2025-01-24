@@ -90,12 +90,7 @@ docker run --rm -v "$(pwd)":/app brick-engine ./examples/example.bee
 
 ## Roadmap
 
-- **Advanced Error Management:** Improved error handling for scripts.
-- **Performance Optimization:** Implement caching for AST to enhance script execution speed.
-- **CLI Interface:** Run and test scripts directly from the terminal.
-- **Database Integration:** Enable scripts to connect to databases and perform database operations.
-- **Object-Oriented Programming:** Allow scripts to work more easily with classes and objects.
-- **Mathematical Operations:** Support complex mathematical computations (e.g., integrals, derivatives).
+Read the full [ROADMAP.md](ROADMAP.md) file for more details on the project's future development plans.
 
 ## License
 
