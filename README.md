@@ -2,9 +2,10 @@
 
 BrickEngine is a simple scripting language that is designed to scriptable web applications.
 
-## Examples
+> **Note:** This project is still in development and not ready for production.
+> If you like the project and want to support, you can support me by giving a star, you can contribute to the project, or you can donate.
 
-### Hello World
+## Examples
 
 ```php
 $script = <<<BRICK
