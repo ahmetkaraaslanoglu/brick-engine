@@ -71,6 +71,15 @@ echo $result; // "You have a discount!" or API message
 2. Functions in the `context->functions` array can be directly accessed within the script.
 3. The `context->variables` array defines variables that can be accessed in the script, such as `cart['total']`.
 
+## Running in Docker
+
+You can run the example script in a Docker container using the following commands:
+
+```bash
+docker build -t brick-engine .
+docker run --rm -v "$(pwd)":/app brick-engine ./examples/example.bee
+```
+
 ## Use Cases
 
 - **E-Commerce Rules:** Create dynamic business rules for cart totals, shipping cost calculations, or payment steps.
