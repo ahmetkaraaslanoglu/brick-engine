@@ -20,7 +20,7 @@ class ReturnStatement extends Node implements StatementInterface
 
     public function run(Context $context): ExecutionResult
     {
-        $value = $this->value->run($context);
+        $value = $this->value?->run($context);
         return new ExecutionResult(
             value: $value,
             return: true,
