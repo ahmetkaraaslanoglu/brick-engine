@@ -1,4 +1,4 @@
-this_is_an_number1 = 42 + 1;
+this_is_an_number1 = 42 + 1 + 5;
 this_is_an_number2 = 42 + 0.5;
 this_is_an_string = "Hello, " + "world" + "!";
 this_is_an_boolean = true && false;
@@ -8,16 +8,18 @@ this_is_an_array = [
     3 => "this is second element"
 ];
 
-if (this_is_an_boolean) {
-    log("true");
+println(this_is_an_array[3]);
+
+if (this_is_an_boolean || true) {
+    println("true");
 } else {
-    log("false");
+    println("false");
 }
 
 function run_while_loop(times = 5) {
     index = 0;
-    while (index < 10) {
-        log(index);
+    while (index < times) {
+        println(index);
         index += 1;
     }
 }
@@ -25,11 +27,11 @@ function run_while_loop(times = 5) {
 run_while_loop(10);
 
 for (index = 0; index < 10; index += 1) {
-    log(index);
+    println(index);
 }
 
 foreach (this_is_an_array as key => value) {
-    log(key, value);
+    println(key, value);
 }
 
 return 0;

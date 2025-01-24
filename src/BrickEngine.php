@@ -2,6 +2,7 @@
 
 namespace IsaEken\BrickEngine;
 
+use IsaEken\BrickEngine\Extensions\ConsoleExtension;
 use IsaEken\BrickEngine\Extensions\HttpExtension;
 use IsaEken\BrickEngine\Extensions\JsonExtension;
 use IsaEken\BrickEngine\Extensions\VarDumperExtension;
@@ -11,6 +12,7 @@ use IsaEken\BrickEngine\Runtime\Context;
 class BrickEngine
 {
     public const array EXTENSIONS = [
+        ConsoleExtension::class,
         HttpExtension::class,
         VarDumperExtension::class,
         JsonExtension::class,
