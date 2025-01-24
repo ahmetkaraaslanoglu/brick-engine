@@ -2,30 +2,19 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Runtime\Context;
-use IsaEken\BrickEngine\Value;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$context = new Context();
-$context->functions['debug'] = function ($argument) use ($context) {
-    $value = $context->value($argument);
-    echo $value . PHP_EOL;
-    return new Value(ValueType::Void);
-};
+$files = $argv;
+array_shift($files);
+$files = array_map(function ($file) {
+    return file_get_contents($file);
+}, $files);
 
-$engine = new BrickEngine($context);
-
-while (true) {
-    try {
-        $input = readline('>>> ');
-        if ($input === 'exit') {
-            break;
-        }
-
-        $output = $engine->run($input);
-    } catch (\Exception $exception) {
-        echo $exception->getMessage() . PHP_EOL;
-    }
+foreach ($files as $file) {
+    $context = new Context();
+    $engine = new BrickEngine($context);
+    $output = $engine->run($file);
+    echo $output->value->data . PHP_EOL;
 }
