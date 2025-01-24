@@ -92,6 +92,15 @@ class Lexer extends BaseLexer
             return Token::make('EOF', '', $cursor);
         }
 
+        if ($char === '/' && $this->peekAt() === '*') {
+            $this->cursor++;
+            $this->cursor++;
+            $value = $this->readUntil(fn ($char, $cursor) => $char === '*' && $this->content[$cursor + 1] === '/');
+            $this->cursor++;
+            $this->cursor++;
+            return Token::make('COMMENT', $value, $cursor);
+        }
+
         if ($this->isNumeric($char)) {
             $value = $char . $this->readUntil(fn ($char) => ! ($this->isNumeric($char) || $char === '.'));
             return Token::make('NUMBER', $value, $cursor);

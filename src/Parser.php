@@ -486,6 +486,11 @@ class Parser
 
     public function parseStatement(): StatementInterface
     {
+        if ($this->token->token === 'COMMENT') {
+            $this->eat('COMMENT');
+            return $this->parseStatement();
+        }
+
         if ($this->token->token === 'LEFT_BRACE') {
             return $this->parseBlock();
         }

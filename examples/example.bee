@@ -16,6 +16,7 @@ if (this_is_an_boolean || true) {
     println("false");
 }
 
+/*
 function run_while_loop(times = 5) {
     index = 0;
     while (index < times) {
@@ -25,6 +26,7 @@ function run_while_loop(times = 5) {
 }
 
 run_while_loop(10);
+*/
 
 for (index = 0; index < 10; index += 1) {
     println(index);
