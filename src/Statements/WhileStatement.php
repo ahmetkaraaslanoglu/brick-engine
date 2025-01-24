@@ -27,6 +27,6 @@ class WhileStatement extends Node implements StatementInterface
             $result = $this->body->run($context);
         }
 
-        return $result;
+        return $result ?? new ExecutionResult();
     }
 }
