@@ -1,13 +1,46 @@
 # BrickEngine
 
-BrickEngine is a simple scripting language that is designed to scriptable web applications.
+**BrickEngine** is a simple, flexible, and extensible script engine written in PHP.  
+It allows you to manage custom business rules, e-commerce discounts, automation scenarios, or any workflow you define without "changing code."
 
-> **Note:** This project is still in development and not ready for production.
-> If you like the project and want to support, you can support me by giving a star, you can contribute to the project, or you can donate.
+> **Status:** The project is still in development and may not yet be fully ready for production use.  
+> **Support Us:** If you like the project, please star it or contribute to support its development.
 
-## Examples
+---
+
+# Why Choose BrickEngine?
+
+## Features
+
+- **Dynamic Scripting Language:** BrickEngine supports a wide range of operations through its flexible scripting language.
+- **Easy Extensibility:** You can add your own functions (e.g., `apply_discount`, `dump`, `json_decode`) and variables to the context. All functions and variables must be explicitly defined and bound to BrickEngine.
+- **API & External Integrations:** Whether for e-commerce, payment systems, or microservices, you can utilize scripts to make external API calls.
+- **Clean and Readable Syntax:** Easily perform conditional operations using simple `if` structures, loops, and assignments.
+- **Performance and Flexibility:** Centralize and manage your business rules to avoid complex branching and if-else chains.
+- **Support for Various Data Types:** Operate on different data types, such as strings, numbers, booleans, and arrays.
+- **Loop and Conditional Structures:** Includes support for control structures like `while`, `if-else`, and `for` loops.
+
+---
+
+## Installation
+
+**Via Composer**
+
+```bash
+composer require isaeken/brick-engine
+```
+
+## Quick Start
+
+The example below demonstrates a simple script that applies a discount if the cart total exceeds 100 units and then processes an e-commerce scenario by fetching a response from an external API.
 
 ```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use IsaEken\BrickEngine\BrickEngine;
+
 $script = <<<BRICK
 if (cart['total'] > 100) {
     apply_discount();
@@ -20,10 +53,49 @@ return response['message'];
 BRICK;
 
 $engine = new BrickEngine();
+
+// Define functions to be used within the script
 $engine->context->functions['apply_discount'] = function () {
-    $this->context->cart['total'] -= 10;
+    $this->context->cart['total'] -= 10; // Apply a discount of 10 units
 };
+
+// Define variables to be used in the script
 $engine->context->variables['cart'] = ['total' => 120];
-$message = $engine->run($script)->value->data;
-echo $message;
+
+$result = $engine->run($script)->value->data;
+echo $result; // "You have a discount!" or API message
 ```
+**How It Works**
+
+1. The `BrickEngine` class interprets and executes the *script*.
+2. Functions in the `context->functions` array can be directly accessed within the script.
+3. The `context->variables` array defines variables that can be accessed in the script, such as `cart['total']`.
+
+## Use Cases
+
+- **E-Commerce Rules:** Create dynamic business rules for cart totals, shipping cost calculations, or payment steps.
+- **Form Validation / Workflow:** Process user inputs and direct them to different scenarios.
+- **Content Management:** Apply dynamic rule sets for news, blogs, or similar content platforms.
+- **API & Microservice Integration:** Manage external API calls based on specific conditions (e.g., order confirmation, payment processing).
+- **Game / Application Logic:** Manage simple rule sets for game servers or create rapid prototypes using mini-scripts within applications.
+
+## Roadmap
+
+- **Advanced Error Management:** Improved error handling for scripts.
+- **Performance Optimization:** Implement caching for AST to enhance script execution speed.
+- **CLI Interface:** Run and test scripts directly from the terminal.
+- **Database Integration:** Enable scripts to connect to databases and perform database operations.
+- **Object-Oriented Programming:** Allow scripts to work more easily with classes and objects.
+- **Mathematical Operations:** Support complex mathematical computations (e.g., integrals, derivatives).
+
+## License
+
+This project is licensed under the MIT License. For more information, see the [LICENSE.md](LICENSE.md) file.
+
+## Contact & More Information
+
+- **Developer / Founder:** İsa Eken (hello@isaeken.com.tr)
+- **GitHub:** [İsa Eken](https://github.com/isaeken)
+- **LinkedIn:** [İsa Eken](https://www.linkedin.com/in/isaeken)
+- **Website:** [https://www.isaeken.com.tr](https://www.isaeken.com.tr)
+
