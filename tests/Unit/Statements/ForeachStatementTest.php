@@ -23,28 +23,39 @@ test('can parse foreach with value only', function () {
 
     expect($statement)
         ->toBeInstanceOf(ForeachStatement::class)
-        ->and($engine->context->variables['x']->data)
+        ->and($engine->context->value($engine->context->variables['x'])->data)
         ->toBe(3);
-})->skip(message: 'Feature not completed yet');
+});
 
 test('can parse foreach with key and value', function () {
-    $engine = new BrickEngine();
-    $content = 'foreach (arr as key => value) { x = value; }';
+    $engine = new BrickEngine(new Context(variables: [
+        'arr' => Value::from(['foo' => 'bar', 'baz' => 'qux']),
+    ]));
+    $content = 'foreach (arr as key => value) { x = value; y = key; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
 
     $parser = new Parser($tokens, $content);
     $statement = $parser->parseStatement();
 
-    expect($statement)->toBeInstanceOf(ForeachStatement::class);
-})->skip(message: 'Feature not completed yet');
+    $statement->run($engine->context);
+
+    expect($statement)
+        ->toBeInstanceOf(ForeachStatement::class)
+        ->and($engine->context->value($engine->context->variables['x'])->data)
+        ->toBe('qux')
+        ->and($engine->context->value($engine->context->variables['y'])->data)
+        ->toBe('baz');
+});
 
 test('can parse foreach with multiple statements', function () {
-    $engine = new BrickEngine();
+    $engine = new BrickEngine(new Context(variables: [
+        'arr' => Value::from([1, 2, 3]),
+    ]));
     $content = 'foreach (arr as value) { 
-        x = value;
-        y = x + 1;
-        z = y + 1;
+        x = value + 1;
+        y = value + 1;
+        z = value + 1;
     }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -52,11 +63,23 @@ test('can parse foreach with multiple statements', function () {
     $parser = new Parser($tokens, $content);
     $statement = $parser->parseStatement();
 
-    expect($statement)->toBeInstanceOf(ForeachStatement::class);
-})->skip(message: 'Feature not completed yet');
+    $statement->run($engine->context);
+
+    expect($statement)
+        ->toBeInstanceOf(ForeachStatement::class)
+        ->and($engine->context->value($engine->context->variables['x'])->data)
+        ->toBe(4)
+        ->and($engine->context->value($engine->context->variables['y'])->data)
+        ->toBe(4)
+        ->and($engine->context->value($engine->context->variables['z'])->data)
+        ->toBe(4);
+});
 
 test('can parse nested foreach loops', function () {
-    $engine = new BrickEngine();
+    $engine = new BrickEngine(new Context(variables: [
+        'arr1' => Value::from([1, 2, 3]),
+        'arr2' => Value::from([4, 5, 6]),
+    ]));
     $content = 'foreach (arr1 as value1) { 
         foreach (arr2 as value2) {
             x = value1 + value2;
@@ -68,5 +91,10 @@ test('can parse nested foreach loops', function () {
     $parser = new Parser($tokens, $content);
     $statement = $parser->parseStatement();
 
-    expect($statement)->toBeInstanceOf(ForeachStatement::class);
-})->skip(message: 'Feature not completed yet');
+    $statement->run($engine->context);
+
+    expect($statement)
+        ->toBeInstanceOf(ForeachStatement::class)
+        ->and($engine->context->value($engine->context->variables['x'])->data)
+        ->toBe(9);
+});
