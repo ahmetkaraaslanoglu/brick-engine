@@ -2,6 +2,7 @@
 
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 use IsaEken\BrickEngine\Runtime\Context;
@@ -76,9 +77,6 @@ test('can parse while loop with multiple statements', function () {
         ->toBe(13);
 });
 
-/**
- * @todo Implement nested while loops
- */
 test('can parse nested while loops', function () {
     $engine = new BrickEngine(new Context([
         'x' => Value::from(0),
@@ -94,12 +92,12 @@ test('can parse nested while loops', function () {
     $tokens = $lexer->run();
 
     $parser = new Parser($tokens, $content);
-    $statement = $parser->parseStatement();
+    $statement = $parser->parseStatement()->run($engine->context);
 
     expect($statement)
-        ->toBeInstanceOf(WhileStatement::class)
+        ->toBeInstanceOf(ExecutionResult::class)
         ->and($engine->context->variables['x']->data)
         ->toBe(10)
         ->and($engine->context->variables['y']->data)
         ->toBe(5);
-})->skip(message: 'Feature not completed yet');
+});
