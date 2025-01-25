@@ -14,6 +14,7 @@ use IsaEken\BrickEngine\Expressions\BinaryExpression;
 use IsaEken\BrickEngine\Expressions\FunctionCallExpression;
 use IsaEken\BrickEngine\Expressions\IdentifierExpression;
 use IsaEken\BrickEngine\Expressions\LiteralExpression;
+use IsaEken\BrickEngine\Expressions\ObjectLiteralExpression;
 use IsaEken\BrickEngine\Expressions\ParamDefinitionExpression;
 use IsaEken\BrickEngine\Statements\AssignmentStatement;
 use IsaEken\BrickEngine\Statements\BlockStatement;
@@ -145,6 +146,11 @@ class Parser
             return $this->parseArrayLiteral();
         }
 
+        if ($this->token->token === 'LEFT_BRACE') {
+            $this->eat('LEFT_BRACE');
+            return $this->parseObjectLiteral();
+        }
+
         if ($this->token->token === 'IDENTIFIER') {
             if ($this->peek()?->token === 'LEFT_PARENTHESIS') {
                 return $this->parseFunctionCall();
@@ -216,6 +222,38 @@ class Parser
         }
 
         return new ArrayLiteralExpression($elements);
+    }
+
+    public function parseObjectLiteral(): ExpressionInterface
+    {
+        $elements = [];
+
+        if ($this->token->token === 'RIGHT_BRACE') {
+            $this->eat('RIGHT_BRACE');
+            return new ObjectLiteralExpression($elements);
+        }
+
+        while (!$this->isEof()) {
+            if ($this->token->token === 'STRING' || $this->token->token === 'IDENTIFIER') {
+                $key = $this->token->value;
+                $this->eat($this->token->token);
+                $this->eat('COLON');
+                $value = $this->parseExpression();
+                $elements[$key] = $value;
+            } else if ($this->token->token === 'COMMA') {
+                $this->eat('COMMA');
+
+                if ($this->token->token === 'RIGHT_BRACE') {
+                    $this->eat('RIGHT_BRACE');
+                    break;
+                }
+            } else if ($this->token->token == 'RIGHT_BRACE') {
+                $this->eat('RIGHT_BRACE');
+                break;
+            }
+        }
+
+        return new ObjectLiteralExpression($elements);
     }
 
     public function parseIdentifierOrArrayAccess(): ExpressionInterface

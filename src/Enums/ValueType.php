@@ -10,6 +10,7 @@ enum ValueType: string
     case Boolean = 'BOOLEAN';
     case Array = 'ARRAY';
     case ArrayElement = 'ARRAY_ELEMENT';
+    case Object = 'OBJECT';
     case Function = 'FUNCTION';
     case Void = 'VOID';
     case Identifier = 'IDENTIFIER';
