@@ -38,7 +38,7 @@ test('can parse function with single parameter', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test'](new Value(ValueType::Numeric, 40))->value->data)
+        ->and($engine->context->functions['test'](Value::from(40))->value->data)
         ->toBe(41);
 });
 
@@ -56,9 +56,9 @@ test('can parse function with multiple parameters', function () {
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test'](
-            new Value(ValueType::Numeric, 10),
-            new Value(ValueType::Numeric, 20),
-            new Value(ValueType::Numeric, 30),
+            Value::from(10),
+            Value::from(20),
+            Value::from(30),
         )->value->data)
         ->toBe(60);
 });
@@ -100,13 +100,13 @@ test('can parse function with complex body', function () {
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test'](
-            new Value(ValueType::Numeric, 10),
-            new Value(ValueType::Numeric, 20),
+            Value::from(10),
+            Value::from(20),
         )->value->data)
         ->toBe(20)
         ->and($engine->context->functions['test'](
-            new Value(ValueType::Numeric, 20),
-            new Value(ValueType::Numeric, 10),
+            Value::from(20),
+            Value::from(10),
         )->value->data)
         ->toBe(20);
 });

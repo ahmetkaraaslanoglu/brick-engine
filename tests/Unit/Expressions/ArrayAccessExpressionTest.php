@@ -10,7 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse array access with numeric index', function () {
     $engine = new BrickEngine(new Context([
-        'arr' => new Value(ValueType::Array, [new Value(ValueType::Numeric, 42)]),
+        'arr' => Value::from([42]),
     ]));
 
     $content = 'arr[0]';
@@ -28,11 +28,7 @@ test('can parse array access with numeric index', function () {
 
 test('can parse array access with index', function () {
     $engine = new BrickEngine(new Context([
-        'arr' => new Value(ValueType::Array, [
-            new Value(ValueType::Numeric, 10),
-            new Value(ValueType::Numeric, 20),
-            new Value(ValueType::Numeric, 30),
-        ]),
+        'arr' => Value::from([10, 20, 30]),
     ]));
 
     $content = 'arr[1]';

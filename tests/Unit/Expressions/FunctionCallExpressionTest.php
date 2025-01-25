@@ -10,7 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse function call without arguments', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => new Value(ValueType::Numeric, 42),
+        'test' => fn () => Value::from(42),
     ]));
     $content = 'test()';
     $lexer = new Lexer($engine, $content);
@@ -27,7 +27,7 @@ test('can parse function call without arguments', function () {
 
 test('can parse function call with single argument', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn ($a) => new Value(ValueType::Numeric, $a),
+        'test' => fn ($a) => $a,
     ]));
     $content = 'test(42)';
     $lexer = new Lexer($engine, $content);
@@ -38,13 +38,13 @@ test('can parse function call with single argument', function () {
 
     expect($expression)
         ->toBeInstanceOf(FunctionCallExpression::class)
-        ->and($expression->run($engine->context)->data->data)
+        ->and($expression->run($engine->context)->data)
         ->toBe(42);
 });
 
 test('can parse function call with multiple arguments', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn ($a, $b, $c) => new Value(ValueType::String, $a->data . $b->data . $c->data),
+        'test' => fn ($a, $b, $c) => Value::from($a->data . $b->data . $c->data),
     ]));
     $content = 'test(1, "two", true)';
     $lexer = new Lexer($engine, $content);
@@ -61,10 +61,10 @@ test('can parse function call with multiple arguments', function () {
 
 test('can parse function call with expression arguments', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Numeric, 10),
-        'b' => new Value(ValueType::Numeric, 20),
-        'x' => new Value(ValueType::Numeric, 5),
-        'y' => new Value(ValueType::Numeric, 2),
+        'a' => Value::from(10),
+        'b' => Value::from(20),
+        'x' => Value::from(5),
+        'y' => Value::from(2),
     ], [
         'test' => fn ($a, $b) => new Value(ValueType::Numeric, $a->data + $b->data),
     ]));

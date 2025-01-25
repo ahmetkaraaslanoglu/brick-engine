@@ -10,7 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse simple identifier', function () {
     $engine = new BrickEngine(new Context([
-        'variable' => new Value(ValueType::Numeric, 42),
+        'variable' => Value::from(42),
     ]));
     $content = 'variable';
     $lexer = new Lexer($engine, $content);
@@ -27,7 +27,7 @@ test('can parse simple identifier', function () {
 
 test('can parse identifier with underscore', function () {
     $engine = new BrickEngine(new Context([
-        'my_variable' => new Value(ValueType::Numeric, 42),
+        'my_variable' => Value::from(42),
     ]));
     $content = 'my_variable';
     $lexer = new Lexer($engine, $content);
@@ -44,7 +44,7 @@ test('can parse identifier with underscore', function () {
 
 test('can parse identifier with numbers', function () {
     $engine = new BrickEngine(new Context([
-        'variable123' => new Value(ValueType::Numeric, 42),
+        'variable123' => Value::from(42),
     ]));
     $content = 'variable123';
     $lexer = new Lexer($engine, $content);

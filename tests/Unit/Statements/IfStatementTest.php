@@ -10,7 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse if statement without else', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 10),
+        'x' => Value::from(10),
     ]));
     $content = 'if (x > 5) { result = true; }';
     $lexer = new Lexer($engine, $content);
@@ -29,7 +29,7 @@ test('can parse if statement without else', function () {
 
 test('can parse if statement with else', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 4),
+        'x' => Value::from(4),
     ]));
     $content = 'if (x > 5) { result = true; } else { result = false; }';
     $lexer = new Lexer($engine, $content);
@@ -48,8 +48,8 @@ test('can parse if statement with else', function () {
 
 test('can parse if statement with complex condition', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 10),
-        'y' => new Value(ValueType::Numeric, 5),
+        'x' => Value::from(10),
+        'y' => Value::from(5),
     ]));
     $content = 'if (x > 5 && y < 10) { result = true; }';
     $lexer = new Lexer($engine, $content);
@@ -68,8 +68,8 @@ test('can parse if statement with complex condition', function () {
 
 test('can parse nested if statements', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 10),
-        'y' => new Value(ValueType::Numeric, 5),
+        'x' => Value::from(10),
+        'y' => Value::from(5),
     ]));
     $content = 'if (x > 5) { if (y < 10) { result = true; } }';
     $lexer = new Lexer($engine, $content);

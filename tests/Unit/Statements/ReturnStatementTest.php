@@ -48,8 +48,8 @@ test('can parse return with literal value', function () {
 
 test('can parse return with expression', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 10),
-        'y' => new Value(ValueType::Numeric, 20),
+        'x' => Value::from(10),
+        'y' => Value::from(20),
     ]));
     $content = 'return x + y;';
     $lexer = new Lexer($engine, $content);
@@ -70,7 +70,7 @@ test('can parse return with expression', function () {
 
 test('can parse return with function call', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => new Value(ValueType::Numeric, 42),
+        'test' => fn () => Value::from(42),
     ]));
     $content = 'return test();';
     $lexer = new Lexer($engine, $content);

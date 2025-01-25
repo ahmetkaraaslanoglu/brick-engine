@@ -10,11 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse foreach with value only', function () {
     $engine = new BrickEngine(new Context([
-        'arr' => new Value(ValueType::Array, [
-            new Value(ValueType::ArrayElement, new Value(ValueType::Numeric, 1)),
-            new Value(ValueType::ArrayElement, new Value(ValueType::Numeric, 2)),
-            new Value(ValueType::ArrayElement, new Value(ValueType::Numeric, 3)),
-        ]),
+        'arr' => Value::from([1, 2, 3]),
     ]));
     $content = 'foreach (arr as value) { x = value; }';
     $lexer = new Lexer($engine, $content);

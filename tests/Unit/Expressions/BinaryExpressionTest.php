@@ -10,8 +10,8 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse addition', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Numeric, 10),
-        'b' => new Value(ValueType::Numeric, 20),
+        'a' => Value::from(10),
+        'b' => Value::from(20),
     ]));
     $content = 'a + b';
     $lexer = new Lexer($engine, $content);
@@ -28,8 +28,8 @@ test('can parse addition', function () {
 
 test('can parse subtraction', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Numeric, 10),
-        'b' => new Value(ValueType::Numeric, 20),
+        'a' => Value::from(10),
+        'b' => Value::from(20),
     ]));
     $content = 'a - b';
     $lexer = new Lexer($engine, $content);
@@ -46,8 +46,8 @@ test('can parse subtraction', function () {
 
 test('can parse comparison', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Numeric, 10),
-        'b' => new Value(ValueType::Numeric, 20),
+        'a' => Value::from(10),
+        'b' => Value::from(20),
     ]));
     $content = 'a > b';
     $lexer = new Lexer($engine, $content);
@@ -64,8 +64,8 @@ test('can parse comparison', function () {
 
 test('can parse equality', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Numeric, 10),
-        'b' => new Value(ValueType::Numeric, 20),
+        'a' => Value::from(10),
+        'b' => Value::from(20),
     ]));
     $content = 'a == b';
     $lexer = new Lexer($engine, $content);
@@ -82,8 +82,8 @@ test('can parse equality', function () {
 
 test('can parse logical operators', function () {
     $engine = new BrickEngine(new Context([
-        'a' => new Value(ValueType::Boolean, true),
-        'b' => new Value(ValueType::Boolean, false),
+        'a' => Value::from(true),
+        'b' => Value::from(false),
     ]));
     $content = 'a && b';
     $lexer = new Lexer($engine, $content);

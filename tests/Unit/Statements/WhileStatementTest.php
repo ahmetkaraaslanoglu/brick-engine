@@ -10,7 +10,7 @@ use IsaEken\BrickEngine\Value;
 
 test('can parse basic while loop', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 0),
+        'x' => Value::from(0),
     ]));
     $content = 'while (x < 10) { x = x + 1; }';
     $lexer = new Lexer($engine, $content);
@@ -29,8 +29,8 @@ test('can parse basic while loop', function () {
 
 test('can parse while loop with complex condition', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 0),
-        'y' => new Value(ValueType::Numeric, 10),
+        'x' => Value::from(0),
+        'y' => Value::from(10),
     ]));
     $content = 'while (x < 10 && y > 0) { x = x + 1; }';
     $lexer = new Lexer($engine, $content);
@@ -49,9 +49,9 @@ test('can parse while loop with complex condition', function () {
 
 test('can parse while loop with multiple statements', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 0),
-        'y' => new Value(ValueType::Numeric, 0),
-        'z' => new Value(ValueType::Numeric, 0),
+        'x' => Value::from(0),
+        'y' => Value::from(0),
+        'z' => Value::from(0),
     ]));
     $content = 'while (x < 10) { 
         x = x + 1;
@@ -81,8 +81,8 @@ test('can parse while loop with multiple statements', function () {
  */
 test('can parse nested while loops', function () {
     $engine = new BrickEngine(new Context([
-        'x' => new Value(ValueType::Numeric, 0),
-        'y' => new Value(ValueType::Numeric, 0),
+        'x' => Value::from(0),
+        'y' => Value::from(0),
     ]));
     $content = 'while (x < 10) { 
         while (y < 5) {
