@@ -109,3 +109,37 @@ test('can parse logical operators', function () {
         ->and($expression->run($engine->context)->data)
         ->toBeTrue();
 });
+
+test('can parse left is variable', function () {
+    $engine = new BrickEngine(new Context([
+        'var' => Value::from(10),
+    ]));
+    $content = 'var + 1';
+    $lexer = new Lexer($engine, $content);
+    $tokens = $lexer->run();
+
+    $parser = new Parser($tokens, $content);
+    $expression = $parser->parseExpression();
+
+    expect($expression)
+        ->toBeInstanceOf(BinaryExpression::class)
+        ->and($expression->run($engine->context)->data)
+        ->toBe(11);
+});
+
+test('can parse right is variable', function () {
+    $engine = new BrickEngine(new Context([
+        'var' => Value::from(10),
+    ]));
+    $content = '1 + var';
+    $lexer = new Lexer($engine, $content);
+    $tokens = $lexer->run();
+
+    $parser = new Parser($tokens, $content);
+    $expression = $parser->parseExpression();
+
+    expect($expression)
+        ->toBeInstanceOf(BinaryExpression::class)
+        ->and($expression->run($engine->context)->data)
+        ->toBe(11);
+});
