@@ -101,3 +101,22 @@ test('can parse assignment with function call', function () {
         ->and($engine->context->variables['result']->data)
         ->toBe(42);
 });
+
+test('can assign variable from a variable', function () {
+    $engine = new BrickEngine(new Context([
+        'a' => Value::from(42),
+    ]));
+    $content = 'b = a;';
+    $lexer = new Lexer($engine, $content);
+    $tokens = $lexer->run();
+
+    $parser = new Parser($tokens, $content);
+    $statement = $parser->parseStatement();
+
+    $statement->run($engine->context);
+
+    expect($statement)
+        ->toBeInstanceOf(AssignmentStatement::class)
+        ->and($engine->context->value($engine->context->variables['b'])->data)
+        ->toBe(42);
+});
