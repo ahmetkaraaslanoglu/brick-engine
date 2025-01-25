@@ -27,7 +27,7 @@ test('can parse function call without arguments', function () {
 
 test('can parse function call with single argument', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn ($a) => $a,
+        'test' => fn (Context $context) => $context->value($context->arguments[0]),
     ]));
     $content = 'test(42)';
     $lexer = new Lexer($engine, $content);
@@ -44,7 +44,12 @@ test('can parse function call with single argument', function () {
 
 test('can parse function call with multiple arguments', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn ($a, $b, $c) => Value::from($a->data . $b->data . $c->data),
+        'test' => function (Context $context) {
+            $arg1 = $context->value($context->arguments[0])->data;
+            $arg2 = $context->value($context->arguments[1])->data;
+            $arg3 = $context->value($context->arguments[2])->data;
+            return Value::from($arg1 . $arg2 . $arg3);
+        },
     ]));
     $content = 'test(1, "two", true)';
     $lexer = new Lexer($engine, $content);
@@ -66,7 +71,11 @@ test('can parse function call with expression arguments', function () {
         'x' => Value::from(5),
         'y' => Value::from(2),
     ], [
-        'test' => fn ($a, $b) => new Value(ValueType::Numeric, $a->data + $b->data),
+        'test' => function ($context) {
+            $arg1 = $context->value($context->arguments[0])->data;
+            $arg2 = $context->value($context->arguments[1])->data;
+            return Value::from($arg1 + $arg2);
+        },
     ]));
     $content = 'test(a + b, x > y)';
     $lexer = new Lexer($engine, $content);

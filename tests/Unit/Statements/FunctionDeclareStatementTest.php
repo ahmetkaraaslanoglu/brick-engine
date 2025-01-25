@@ -5,6 +5,7 @@ use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
+use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\FunctionDeclareStatement;
 use IsaEken\BrickEngine\Value;
 
@@ -21,7 +22,7 @@ test('can parse function without parameters', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test']())
+        ->and($engine->context->functions['test'](new Context()))
         ->toBeInstanceOf(ExecutionResult::class);
 });
 
@@ -38,7 +39,9 @@ test('can parse function with single parameter', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test'](Value::from(40))->value->data)
+        ->and($engine->context->functions['test'](new Context(arguments: [
+            Value::from(40),
+        ]))->value->data)
         ->toBe(41);
 });
 
@@ -55,11 +58,11 @@ test('can parse function with multiple parameters', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test'](
+        ->and($engine->context->functions['test'](new Context(arguments: [
             Value::from(10),
             Value::from(20),
             Value::from(30),
-        )->value->data)
+        ]))->value->data)
         ->toBe(60);
 });
 
@@ -76,7 +79,7 @@ test('can parse function with default parameters', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test']()->value->data)
+        ->and($engine->context->functions['test'](new Context())->value->data)
         ->toBe(3);
 });
 
@@ -99,14 +102,14 @@ test('can parse function with complex body', function () {
 
     expect($statement)
         ->toBeInstanceOf(FunctionDeclareStatement::class)
-        ->and($engine->context->functions['test'](
+        ->and($engine->context->functions['test'](new Context(arguments: [
             Value::from(10),
             Value::from(20),
-        )->value->data)
+        ]))->value->data)
         ->toBe(20)
-        ->and($engine->context->functions['test'](
-            Value::from(20),
-            Value::from(10),
-        )->value->data)
+        ->and($engine->context->functions['test'](new Context(arguments: [
+                Value::from(20),
+                Value::from(10),
+        ]))->value->data)
         ->toBe(20);
 });
