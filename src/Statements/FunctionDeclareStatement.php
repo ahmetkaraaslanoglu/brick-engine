@@ -21,8 +21,10 @@ class FunctionDeclareStatement extends Node implements StatementInterface
 
     public function run(Context $context): ExecutionResult
     {
-        $context->functions[$this->callee] = function (...$arguments) use ($context) {
-            $context = new Context([], $context->functions);
+        $context->functions[$this->callee] = function (Context $context) {
+            $arguments = array_map(function ($argument) use ($context) {
+                return $context->value($argument);
+            }, $context->arguments);
 
             foreach ($this->arguments as $index => $argument) {
                 if ($arguments[$index] ?? false) {

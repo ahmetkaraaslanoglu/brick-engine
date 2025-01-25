@@ -8,14 +8,13 @@ use IsaEken\BrickEngine\Value;
 
 class Context
 {
-    public array $variables = [];
-
-    public array $functions = [];
-
-    public function __construct(array $variables = [], array $functions = [])
+    public function __construct(
+        public array $variables = [],
+        public array $functions = [],
+        public array $arguments = [],
+    )
     {
-        $this->variables = $variables;
-        $this->functions = $functions;
+        // ...
     }
 
     public function value(Value $value): mixed

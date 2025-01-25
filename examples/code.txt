@@ -20,7 +20,23 @@ value = 0;
 while (value < 10) {
     echo(' sa ' + value);
     value += 1;
+
+    value2 = 0;
+    while (value2 < 10) {
+        echo(' sa ' + value2 + ' asd ' + value);
+        value2 += 1;
+    }
 }
+
+function run_while_loop(times = 5) {
+    index = 0;
+    while (index < times) {
+        println(index);
+        index += 1;
+    }
+}
+
+run_while_loop(10);
 
 if (false) {
     echo(' sa qwe');

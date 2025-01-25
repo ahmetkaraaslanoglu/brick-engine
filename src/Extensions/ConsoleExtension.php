@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Extensions;
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExtensionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 class ConsoleExtension implements ExtensionInterface
@@ -16,21 +17,25 @@ class ConsoleExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['print'] = fn(Value $argument) => $this->print($argument);
-        $this->engine->context->functions['println'] = fn(Value $argument) => $this->println($argument);
+        $this->engine->context->functions['print'] = fn(Context $context) => $this->print($context);
+        $this->engine->context->functions['println'] = fn(Context $context) => $this->println($context);
     }
 
-    public function print(Value $argument): Value
+    public function print(Context $context): Value
     {
-        $value = $this->engine->context->value($argument);
-        print($value);
+        foreach ($context->arguments as $argument) {
+            print(sprintf("%s", $context->value($argument)->data));
+        }
+
         return new Value(ValueType::Void);
     }
 
-    public function println(Value $argument): Value
+    public function println(Context $context): Value
     {
-        $value = $this->engine->context->value($argument);
-        print($value . PHP_EOL);
+        foreach ($context->arguments as $argument) {
+            print(sprintf("%s\n", $context->value($argument)->data));
+        }
+
         return new Value(ValueType::Void);
     }
 }

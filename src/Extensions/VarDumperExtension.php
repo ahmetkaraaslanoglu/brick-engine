@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Extensions;
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExtensionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 class VarDumperExtension implements ExtensionInterface
@@ -15,18 +16,20 @@ class VarDumperExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['dump'] = fn(Value $argument) => $this->dump($argument);
+        $this->engine->context->functions['dump'] = fn(Context $context) => $this->dump($context);
     }
 
-    public function dump(Value $argument): Value
+    public function dump(Context $context): Value
     {
-        if ($argument->is(ValueType::Identifier)) {
-            $value = $this->engine->context->variables[$argument->data];
-            print($value . PHP_EOL);
-            return new Value(ValueType::Void);
+        foreach ($context->arguments as $argument) {
+            if ($argument->is(ValueType::Identifier)) {
+                $value = $context->variables[$argument->data];
+                print($value . PHP_EOL);
+            } else {
+                print($argument . PHP_EOL);
+            }
         }
 
-        print($argument . PHP_EOL);
         return new Value(ValueType::Void);
     }
 }

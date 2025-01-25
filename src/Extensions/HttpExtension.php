@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Extensions;
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExtensionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 class HttpExtension implements ExtensionInterface
@@ -16,12 +17,12 @@ class HttpExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['fetch'] = fn(Value $arguments) => $this->fetch($arguments);
+        $this->engine->context->functions['fetch'] = fn(Context $context) => $this->fetch($context);
     }
 
-    public function fetch(Value $arguments): Value
+    public function fetch(Context $context): Value
     {
-        $url = $arguments->data;
+        $url = $context->arguments[0]->data;
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);

@@ -13,13 +13,19 @@ $engine = new BrickEngine();
 $engine->context = new Context([
     'asd' => new Value(ValueType::Numeric, 123),
 ], [
-    'asd' => function (Value $a, Value $b) use ($engine): Value {
-        $a = $engine->context->value($a);
-        $b = $engine->context->value($b);
-        return new Value($a->type, $a->data + $b->data);
+    'asd' => function (Context $context) use ($engine): Value {
+        $arguments = array_map(function ($argument) use ($context) {
+            return $context->value($argument)->data;
+        }, $context->arguments);
+        $value = array_reduce($arguments, fn ($a, $b) => $a + $b, 0);
+
+        return new Value(ValueType::Numeric, $value);
     },
-    'echo' => function (Value $a) use ($engine): Value {
-        echo $engine->context->value($a)->data . PHP_EOL;
+    'echo' => function (Context $context) use ($engine): Value {
+        foreach ($context->arguments as $argument) {
+            print(sprintf("%s\n", $engine->context->value($argument)->data));
+        }
+
         return new Value(ValueType::Void);
     },
 ]);

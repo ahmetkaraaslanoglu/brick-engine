@@ -34,7 +34,10 @@ class FunctionCallExpression extends Node implements ExpressionInterface
             throw new FunctionNotFoundException($callee);
         }
 
-        $value = $context->functions[$callee](...$arguments);
+        $context = clone $context;
+        $context->arguments = $arguments;
+        $value = $context->functions[$callee]($context);
+
         if ($value instanceof ExecutionResult) {
             return $value->value ?? new Value(ValueType::Void);
         }

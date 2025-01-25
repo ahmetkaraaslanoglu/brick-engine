@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Extensions;
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExtensionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
+use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 class JsonExtension implements ExtensionInterface
@@ -16,19 +17,23 @@ class JsonExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['json_encode'] = fn(Value $arguments) => $this->json_encode($arguments);
-        $this->engine->context->functions['json_decode'] = fn(Value $arguments) => $this->json_decode($arguments);
+        $this->engine->context->functions['json_encode'] = fn(Context $context) => $this->json_encode($context);
+        $this->engine->context->functions['json_decode'] = fn(Context $context) => $this->json_decode($context);
     }
 
-    public function json_encode(Value $arguments): Value
+    public function json_encode(Context $context): Value
     {
-        $data = $this->engine->context->value($arguments)->data;
+        $argument = $context->arguments[0];
+        $data = $context->value($argument)->data;
+
         return Value::from(json_encode($data));
     }
 
-    public function json_decode(Value $arguments): Value
+    public function json_decode(Context $context): Value
     {
-        $data = $this->engine->context->value($arguments)->data;
+        $argument = $context->arguments[0];
+        $data = $context->value($argument)->data;
+
         return Value::from(json_decode($data, true));
     }
 }
