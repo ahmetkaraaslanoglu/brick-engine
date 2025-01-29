@@ -84,6 +84,26 @@ class Value
         return sprintf('UNKNOWN(%s)', $this->type->value);
     }
 
+    public static function real(Value $value): mixed
+    {
+        return match ($value->type) {
+            ValueType::Boolean => boolval($value->data),
+            ValueType::Numeric => is_int($value->data) ? intval($value->data) : floatval($value->data),
+            ValueType::String => strval($value->data),
+            ValueType::Array => (function () use ($value) {
+                $array = [];
+                foreach ($value->data as $item) {
+                    $array[] = self::real($item);
+                }
+
+                return $array;
+            })(),
+            ValueType::Identifier => $value->data, // @todo: get value from variable
+            ValueType::Function => $value->data, // @todo: function reference
+            default => null,
+        };
+    }
+
     public static function from(mixed $value): Value
     {
         if (is_bool($value)) {
