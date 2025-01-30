@@ -442,6 +442,16 @@ class Parser
         }
 
         $expression = $this->parseExpression();
+        if ($expression instanceof ArrayAccessExpression && $this->token->token === 'EQUAL') {
+            $this->eat('EQUAL');
+            $statement = new AssignmentStatement(
+                left: $expression,
+                right: $this->parseExpression(),
+            );
+            $this->eat('SEMICOLON');
+            return $statement;
+        }
+
         if (! in_array($expression::class, [ClosureExpression::class])) {
             $this->eat('SEMICOLON');
         }
