@@ -22,11 +22,10 @@ class Runtime
     public function run(): ExecutionResult
     {
         try {
-            $a = $this->program->run(
+            return $this->program->run(
                 $this,
                 $this->context,
             );
-            dd($a, $this->ticks);
         } catch (IgnorableException $ignorableException) {
             dump($ignorableException);
         }
