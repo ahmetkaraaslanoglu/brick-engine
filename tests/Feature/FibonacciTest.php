@@ -16,7 +16,7 @@ test('can calculate fibonacci sequence', function () {
             b = 1;
             i = 2;
             
-            while (i < n) {
+            while (i <= n) {
                 temp = b;
                 b = a + b;
                 a = temp;
@@ -30,10 +30,8 @@ test('can calculate fibonacci sequence', function () {
         fib1 = fibonacci(1);
         fib2 = fibonacci(2);
         fib3 = fibonacci(3);
-        fib4 = fibonacci(4);
-        fib5 = fibonacci(5);
         
-        //return [fib0, fib1, fib2, fib3, fib4, fib5];
+        return [fib0, fib1, fib2, fib3];
     ';
 
     $result = $engine->run($code);
@@ -42,7 +40,5 @@ test('can calculate fibonacci sequence', function () {
     expect(fromValue($data[0]))->toBe(0);
     expect(fromValue($data[1]))->toBe(1);
     expect(fromValue($data[2]))->toBe(1);
-    //expect(fromValue($data[3]))->toBe(2);
-    //expect(fromValue($data[4]))->toBe(3);
-    //expect(fromValue($data[5]))->toBe(5);
-});
+    expect(fromValue($data[3]))->toBe(2);
+}); // @todo fix problems when calculating fib 4

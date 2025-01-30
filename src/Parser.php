@@ -37,6 +37,8 @@ class Parser
         'MINUS'           => [60, 'left'], // -
         'LESS_THAN'       => [50, 'left'], // <
         'GREATER_THAN'    => [50, 'left'],
+        'LESS_THAN_OR_EQUAL' => [50, 'left'],
+        'GREATER_THAN_OR_EQUAL' => [50, 'left'],
         'LESS_EQUAL'      => [50, 'left'],
         'GREATER_EQUAL'   => [50, 'left'],
         'EQUALS'     => [40, 'left'], // ==
