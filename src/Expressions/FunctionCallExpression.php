@@ -29,14 +29,14 @@ class FunctionCallExpression extends Node implements ExpressionInterface
     {
         parent::run($runtime, $context);
 
-        $arguments = array_map(fn ($argument) => $argument->run($context), $this->arguments);
+        $arguments = array_map(fn ($argument) => $argument->run($runtime, $context), $this->arguments);
         $arguments = array_map(fn ($argument) => fromValue($argument), $arguments);
 
         $callee = $this->callee;
         $closure = null;
 
         if ($callee instanceof ExpressionInterface) {
-            $callee = $callee->run($context);
+            $callee = $callee->run($runtime, $context);
         }
 
         // @todo deprecate old function calling

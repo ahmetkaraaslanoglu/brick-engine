@@ -23,8 +23,8 @@ class ObjectLiteralExpression extends Node implements ExpressionInterface
     {
         parent::run($runtime, $context);
 
-        $object = array_map(function ($value) use ($context) {
-            return $context->value($value->run($context));
+        $object = array_map(function ($value) use ($context, $runtime) {
+            return $context->value($value->run($runtime, $context));
         }, $this->elements);
 
         return new Value($context, ValueType::Object, $object);

@@ -23,7 +23,7 @@ class ExpressionStatement extends Node implements StatementInterface
     {
         parent::run($runtime, $context);
 
-        return new ExecutionResult($this->expression->run($context));
+        return new ExecutionResult($this->expression->run($runtime, $context));
     }
 
     public function compile(): string

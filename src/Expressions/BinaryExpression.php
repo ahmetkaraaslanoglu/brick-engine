@@ -30,8 +30,8 @@ class BinaryExpression extends Node implements ExpressionInterface
 
         $operator = $this->operator;
 
-        $left = $this->resolveValue($context, 'left');
-        $right = $this->resolveValue($context, 'right');
+        $left = $this->resolveValue($runtime, $context, 'left');
+        $right = $this->resolveValue($runtime, $context, 'right');
 
         if ($operator === '+' && ($left->is(ValueType::String) || $right->is(ValueType::String))) {
             return new Value($context, ValueType::String, $left->data . $right->data);
@@ -59,17 +59,17 @@ class BinaryExpression extends Node implements ExpressionInterface
         }
 
         if (in_array($operator, ['+', '-', '*', '/', '%'])) {
-            return $this->calculate($context, $left, $right, $operator);
+            return $this->calculate($runtime, $context, $left, $right, $operator);
         }
 
         if (in_array($operator, ['&&', '||', '==', '!=', '>', '<', '>=', '<=', '===', '!==', '??', '?:'])) {
-            return $this->compare($context, $left, $right, $operator);
+            return $this->compare($runtime, $context, $left, $right, $operator);
         }
 
         throw new UnsupportedException("Unsupported operator: {$operator}");
     }
 
-    private function calculate(Context $context, Value $left, Value $right, string $operator): Value
+    private function calculate(Runtime $runtime, Context $context, Value $left, Value $right, string $operator): Value
     {
         return new Value($context, ValueType::Numeric, match ($operator) {
             '+' => \fromValue($left) + \fromValue($right),
@@ -81,7 +81,7 @@ class BinaryExpression extends Node implements ExpressionInterface
         });
     }
 
-    private function compare(Context $context, Value $left, Value $right, string $operator): Value
+    private function compare(Runtime $runtime, Context $context, Value $left, Value $right, string $operator): Value
     {
         return new Value($context, ValueType::Boolean, match ($operator) {
             '&&' => \fromValue($left) && \fromValue($right),
@@ -100,7 +100,7 @@ class BinaryExpression extends Node implements ExpressionInterface
         });
     }
 
-    private function resolveValue(Context $context, string $side): Value
+    private function resolveValue(Runtime $runtime, Context $context, string $side): Value
     {
         $object = $this->{$side};
         if ($object instanceof IdentifierExpression) {
@@ -112,7 +112,7 @@ class BinaryExpression extends Node implements ExpressionInterface
             return $context->variables[$identifier];
         }
 
-        return $object->run($context);
+        return $object->run($runtime, $context);
     }
 
     public function compile(): string

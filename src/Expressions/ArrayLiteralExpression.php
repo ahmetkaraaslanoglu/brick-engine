@@ -28,7 +28,7 @@ class ArrayLiteralExpression extends Node implements ExpressionInterface
 
         foreach ($this->elements as $element) {
             $this->assertType($element, ArrayElementExpression::class);
-            $element = $element->run($context)->data;
+            $element = $element->run($runtime, $context)->data;
 
             if ($element['spread']) {
                 if (! array_key_exists($element['value']->data, $context->variables)) {

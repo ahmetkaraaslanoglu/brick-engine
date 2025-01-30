@@ -23,7 +23,7 @@ class ReturnStatement extends Node implements StatementInterface
     {
         parent::run($runtime, $context);
 
-        $value = $this->value?->run($context);
+        $value = $this->value?->run($runtime, $context);
         return new ExecutionResult(
             value: $value,
             return: true,

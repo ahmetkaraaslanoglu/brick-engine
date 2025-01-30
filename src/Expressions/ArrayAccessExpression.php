@@ -33,7 +33,7 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
             throw new VariableNotFoundException($this->identifier->value);
         }
 
-        $index = $this->index ? $this->index->run($context)?->data : null;
+        $index = $this->index ? $this->index->run($runtime, $context)?->data : null;
         $array = $context->variables[$this->identifier->data['value']]->data;
 
         if (! is_array($array)) {

@@ -25,6 +25,7 @@ class BlockStatement extends Node implements StatementInterface
         /** @var StatementInterface $statement */
         foreach ($this->data['statements'] as $statement) {
             $result = $statement->run(
+                $runtime,
                 $context,
             );
 

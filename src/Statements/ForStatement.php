@@ -26,12 +26,12 @@ class ForStatement extends Node implements StatementInterface
     {
         parent::run($runtime, $context);
 
-        $this->init->run($context);
+        $this->init->run($runtime, $context);
         $result = null;
 
-        while ($this->condition->run($context)->isTruthy()) {
-            $result = $this->body->run($context);
-            $this->update->run($context);
+        while ($this->condition->run($runtime, $context)->isTruthy()) {
+            $result = $this->body->run($runtime, $context);
+            $this->update->run($runtime, $context);
         }
 
         return $result;

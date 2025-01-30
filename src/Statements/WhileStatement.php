@@ -26,8 +26,8 @@ class WhileStatement extends Node implements StatementInterface
 
         $result = null;
 
-        while ($this->condition->run($context)->isTruthy()) {
-            $result = $this->body->run($context);
+        while ($this->condition->run($runtime, $context)->isTruthy()) {
+            $result = $this->body->run($runtime, $context);
 
             if ($result->break) {
                 break;

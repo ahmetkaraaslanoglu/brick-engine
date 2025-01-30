@@ -21,6 +21,7 @@ class Runtime
     {
         try {
             $a = $this->program->run(
+                $this,
                 $this->context,
             );
             dd($a, $this->ticks);

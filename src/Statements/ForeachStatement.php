@@ -28,8 +28,8 @@ class ForeachStatement extends Node implements StatementInterface
     {
         parent::run($runtime, $context);
 
-        $left = $this->left->run($context);
-        $right = $this->right->run($context);
+        $left = $this->left->run($runtime, $context);
+        $right = $this->right->run($runtime, $context);
 
         if (! $context->variables[$left->data]->is(ValueType::Array)) {
             throw new InvalidForeachTargetException("Left side of foreach statement must be an array.");
@@ -47,7 +47,7 @@ class ForeachStatement extends Node implements StatementInterface
             }
 
             $context->variables[$valueName] = $value;
-            $result = $this->body->run($context);
+            $result = $this->body->run($runtime, $context);
         }
 
         return $result;

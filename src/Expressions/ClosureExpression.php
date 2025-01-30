@@ -26,16 +26,16 @@ class ClosureExpression extends Node implements ExpressionInterface
     {
         parent::run($runtime, $context);
 
-        $closure = function (...$arguments) use ($context) {
+        $closure = function (...$arguments) use ($runtime, $context) {
             foreach ($this->arguments as $index => $argument) {
                 if ($arguments[$index] ?? false) {
                     $context->variables[$argument->identifier] = value($arguments[$index]);
                 } else {
-                    $context->variables[$argument->identifier] = $argument->default_value?->run($context) ?? value(null);
+                    $context->variables[$argument->identifier] = $argument->default_value?->run($runtime, $context) ?? value(null);
                 }
             }
 
-            $result = $this->body->run($context);
+            $result = $this->body->run($runtime, $context);
             if ($result->return) {
                 return fromValue($result->value);
             }

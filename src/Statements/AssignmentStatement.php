@@ -27,7 +27,7 @@ class AssignmentStatement extends Node implements StatementInterface
 
         $this->assertType($this->left, IdentifierExpression::class);
         $identifier = $this->left->value;
-        $value = $this->right->run($context);
+        $value = $this->right->run($runtime, $context);
         $context->variables[$identifier] = $value;
         return new ExecutionResult($value);
     }

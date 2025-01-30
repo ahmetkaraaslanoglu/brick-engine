@@ -25,12 +25,12 @@ class IfStatement extends Node implements StatementInterface
     {
         parent::run($runtime, $context);
 
-        $condition = $this->condition->run($context)->isTruthy();
+        $condition = $this->condition->run($runtime, $context)->isTruthy();
 
         if ($condition) {
-            return $this->then->run($context);
+            return $this->then->run($runtime, $context);
         } else if ($this->else) {
-            return $this->else->run($context);
+            return $this->else->run($runtime, $context);
         }
 
         return new ExecutionResult();
