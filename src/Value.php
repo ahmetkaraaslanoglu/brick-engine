@@ -126,6 +126,10 @@ class Value
             return new Value($context, ValueType::Array, $items);
         }
 
+        if (is_callable($value)) {
+            return new Value($context, ValueType::Closure, $value);
+        }
+
         if ($value === null) {
             return new Value($context, ValueType::Null);
         }

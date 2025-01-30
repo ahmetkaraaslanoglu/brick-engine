@@ -25,6 +25,16 @@ class ObjectAccessExpression extends Node implements ExpressionInterface
     {
         $this->assertType($this->identifier, IdentifierExpression::class);
 
+        if (array_key_exists($this->identifier->value, $context->namespaces)) {
+            $key = $this->key ?? null;
+            $object = $context->namespaces[$this->identifier->data['value']];
+            if (array_key_exists($key, $object)) {
+                return \value($object[$key]);
+            }
+
+            throw new ArrayKeyNotFoundException();
+        }
+
         if (! array_key_exists($this->identifier->value, $context->variables)) {
             throw new VariableNotFoundException($this->identifier->value);
         }

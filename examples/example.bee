@@ -54,4 +54,6 @@ an_array = [
 my_closure = an_array[1];
 println(my_closure('sa'));
 
+console.color("green", "Hello colored world!\n");
+
 return 0;

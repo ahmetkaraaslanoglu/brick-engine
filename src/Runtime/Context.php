@@ -12,6 +12,7 @@ class Context
         public array $variables = [],
         public array $functions = [],
         public array $arguments = [], // @deprecated
+        public array $namespaces = [],
     )
     {
         // ...
