@@ -20,6 +20,7 @@ use IsaEken\BrickEngine\Expressions\ParamDefinitionExpression;
 use IsaEken\BrickEngine\Expressions\UnaryExpression;
 use IsaEken\BrickEngine\Statements\AssignmentStatement;
 use IsaEken\BrickEngine\Statements\BlockStatement;
+use IsaEken\BrickEngine\Statements\BreakStatement;
 use IsaEken\BrickEngine\Statements\ExpressionStatement;
 use IsaEken\BrickEngine\Statements\ForeachStatement;
 use IsaEken\BrickEngine\Statements\ForStatement;
@@ -585,6 +586,13 @@ class Parser
         return new ReturnStatement($value);
     }
 
+    public function parseBreakStatement(): StatementInterface
+    {
+        $this->eat('BREAK');
+        $this->eat('SEMICOLON');
+        return new BreakStatement();
+    }
+
     public function parseStatement(): StatementInterface
     {
         if ($this->token->token === 'COMMENT') {
@@ -619,6 +627,10 @@ class Parser
 
         if ($this->token->token === 'RETURN') {
             return $this->parseReturnStatement();
+        }
+
+        if ($this->token->token === 'BREAK') {
+            return $this->parseBreakStatement();
         }
 
         return $this->parseExpressionStatement();

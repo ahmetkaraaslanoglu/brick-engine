@@ -32,6 +32,11 @@ class BlockStatement extends Node implements StatementInterface
 
                 return $result;
             }
+
+            if ($result->break) {
+                $result->break = true;
+                return $result;
+            }
         }
 
         return new ExecutionResult();

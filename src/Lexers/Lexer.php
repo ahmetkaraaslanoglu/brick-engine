@@ -21,6 +21,7 @@ class Lexer extends BaseLexer
         'FOREACH',
         'IN',
         'AS',
+        'BREAK',
     ];
 
     public const array SYNTAX = [
