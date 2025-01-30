@@ -66,6 +66,7 @@ console.println(json.encode({
 
 console.var_dump(json.decode('{ "userId": 1, "id": 1, "title": "delectus aut autem", "completed": false }'));
 
+time.sleep(1000);
 console.clear();
 
 current = 0;
