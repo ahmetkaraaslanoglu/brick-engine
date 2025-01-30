@@ -24,25 +24,20 @@ class FunctionCallExpression extends Node implements ExpressionInterface
     public function run(Context $context): Value
     {
         $callee = $this->callee;
-        $arguments = $this->arguments;
-
-        foreach ($arguments as $index => $argument) {
-            $arguments[$index] = $argument->run($context);
-        }
+        $arguments = array_map(fn ($argument) => $argument->run($context), $this->arguments);
+        $arguments = array_map(fn ($argument) => fromValue($argument), $arguments);
 
         if (! array_key_exists($callee, $context->functions)) {
             throw new FunctionNotFoundException($callee);
         }
 
-        $context = clone $context;
-        $context->arguments = $arguments;
-        $value = $context->functions[$callee]($context);
+        $value = (clone $context)->functions[$callee](...$arguments);
 
-        if ($value instanceof ExecutionResult) {
-            return $value->value ?? new Value($context, ValueType::Void);
+        if ($value) {
+            return \value($value);
         }
 
-        return $value;
+        return new Value($context, ValueType::Void);
     }
 
     public function compile(): string

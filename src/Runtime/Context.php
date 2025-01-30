@@ -11,7 +11,7 @@ class Context
     public function __construct(
         public array $variables = [],
         public array $functions = [],
-        public array $arguments = [],
+        public array $arguments = [], // @deprecated
     )
     {
         // ...
@@ -20,6 +20,13 @@ class Context
     public function setVariable(string $identifier, mixed $value): self
     {
         $this->variables[$identifier] = value($value);
+
+        return $this;
+    }
+
+    public function setFunction(string $callee, callable $function): self
+    {
+        $this->functions[$callee] = $function;
 
         return $this;
     }

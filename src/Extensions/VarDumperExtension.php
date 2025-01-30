@@ -16,20 +16,14 @@ class VarDumperExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['dump'] = fn(Context $context) => $this->dump($context);
+        $this->engine->context->functions['dump'] = [$this, 'dump'];
     }
 
-    public function dump(Context $context): Value
+    public function dump(...$arguments)
     {
-        foreach ($context->arguments as $argument) {
-            if ($argument->is(ValueType::Identifier)) {
-                $value = $context->variables[$argument->data];
-                print($value . PHP_EOL);
-            } else {
-                print($argument . PHP_EOL);
-            }
+        foreach ($arguments as $argument) {
+            print_r($argument);
+            print("\n");
         }
-
-        return new Value($context, ValueType::Void);
     }
 }

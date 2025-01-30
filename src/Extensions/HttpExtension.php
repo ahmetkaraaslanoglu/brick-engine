@@ -17,16 +17,15 @@ class HttpExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['fetch'] = fn(Context $context) => $this->fetch($context);
+        $this->engine->context->functions['fetch'] = [$this, 'fetch'];
     }
 
-    public function fetch(Context $context): Value
+    public function fetch(string $url)
     {
-        $url = $context->arguments[0]->data;
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
-        return Value::from($context, $response);
+        return $response;
     }
 }

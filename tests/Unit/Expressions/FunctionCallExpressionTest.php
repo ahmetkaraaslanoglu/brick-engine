@@ -22,16 +22,10 @@ test('can be compile to php', function () {
 });
 
 test('can parse function call without arguments', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => Value::from($emptyContext, 42),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setFunction('test', fn () => 42);
     $content = 'test()';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
-
-    $parser = new Parser($tokens, $content);
-    $expression = $parser->parseFactor();
+    $expression = new Parser(new Lexer($engine, $content)->run(), $content)->parseFactor();
 
     expect($expression)
         ->toBeInstanceOf(FunctionCallExpression::class)
@@ -40,15 +34,12 @@ test('can parse function call without arguments', function () {
 });
 
 test('can parse function call with single argument', function () {
-    $engine = new BrickEngine(new Context(functions: [
-        'test' => fn (Context $context) => $context->value($context->arguments[0]),
-    ]));
-    $content = 'test(42)';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
+    $engine = new BrickEngine();
+    $engine->context->setFunction('test', fn (...$args) => $args[0]);
 
-    $parser = new Parser($tokens, $content);
-    $expression = $parser->parseFactor();
+    $content = 'test(42)';
+    $expression = new Parser(new Lexer($engine, $content)->run(), $content)
+        ->parseFactor();
 
     expect($expression)
         ->toBeInstanceOf(FunctionCallExpression::class)
@@ -57,21 +48,10 @@ test('can parse function call with single argument', function () {
 });
 
 test('can parse function call with multiple arguments', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context(functions: [
-        'test' => function (Context $context) {
-            $arg1 = $context->value($context->arguments[0])->data;
-            $arg2 = $context->value($context->arguments[1])->data;
-            $arg3 = $context->value($context->arguments[2])->data;
-            return Value::from($context, $arg1 . $arg2 . $arg3);
-        },
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setFunction('test', fn (...$args) => array_reduce($args, fn ($carry, $item) => $carry . $item, ''));
     $content = 'test(1, "two", true)';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
-
-    $parser = new Parser($tokens, $content);
-    $expression = $parser->parseFactor();
+    $expression = new Parser(new Lexer($engine, $content)->run(), $content)->parseFactor();
 
     expect($expression)
         ->toBeInstanceOf(FunctionCallExpression::class)
@@ -81,24 +61,16 @@ test('can parse function call with multiple arguments', function () {
 
 test('can parse function call with expression arguments', function () {
     $engine = new BrickEngine(new Context(functions: [
-        'test' => function ($context) {
-            $arg1 = $context->value($context->arguments[0])->data;
-            $arg2 = $context->value($context->arguments[1])->data;
-            return \value($arg1 + $arg2);
-        },
+        'test' => fn ($arg1, $arg2) => $arg1 + $arg2,
     ]));
     $engine->context
         ->setVariable('a', 10)
         ->setVariable('b', 20)
         ->setVariable('x', 5)
         ->setVariable('y', 2);
-
     $content = 'test(a + b, x > y)';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
 
-    $parser = new Parser($tokens, $content);
-    $expression = $parser->parseFactor();
+    $expression = new Parser(new Lexer($engine, $content)->run(), $content)->parseFactor();
 
     expect($expression)
         ->toBeInstanceOf(FunctionCallExpression::class)

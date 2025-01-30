@@ -17,25 +17,21 @@ class ConsoleExtension implements ExtensionInterface
 
     public function register(): void
     {
-        $this->engine->context->functions['print'] = fn(Context $context) => $this->print($context);
-        $this->engine->context->functions['println'] = fn(Context $context) => $this->println($context);
+        $this->engine->context->functions['print'] = [$this, 'print'];
+        $this->engine->context->functions['println'] = [$this, 'println'];
     }
 
-    public function print(Context $context): Value
+    public function print(...$arguments)
     {
-        foreach ($context->arguments as $argument) {
-            print(sprintf("%s", $context->value($argument)->data));
+        foreach ($arguments as $argument) {
+            print(sprintf("%s", $argument));
         }
-
-        return new Value($context, ValueType::Void);
     }
 
-    public function println(Context $context): Value
+    public function println(...$arguments)
     {
-        foreach ($context->arguments as $argument) {
-            print(sprintf("%s\n", $context->value($argument)->data));
+        foreach ($arguments as $argument) {
+            print(sprintf("%s\n", $argument));
         }
-
-        return new Value($context, ValueType::Void);
     }
 }

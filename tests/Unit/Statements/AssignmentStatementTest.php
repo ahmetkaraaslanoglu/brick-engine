@@ -91,16 +91,11 @@ test('can parse assignment with array', function () {
 });
 
 test('can parse assignment with function call', function () {
-    $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => \value(42),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setFunction('test', fn () => 42);
     $content = 'result = test();';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
 
-    $parser = new Parser($tokens, $content);
-    $statement = $parser->parseStatement();
-
+    $statement = new Parser(new Lexer($engine, $content)->run(), $content)->parseStatement();
     $statement->run($engine->context);
 
     expect($statement)

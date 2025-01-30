@@ -80,17 +80,11 @@ test('can parse return with expression', function () {
 });
 
 test('can parse return with function call', function () {
-    $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => \value(42),
-    ]));
-
+    $engine = new BrickEngine();
+    $engine->context->setFunction('test', fn () => 42);
     $content = 'return test();';
-    $lexer = new Lexer($engine, $content);
-    $tokens = $lexer->run();
 
-    $parser = new Parser($tokens, $content);
-    $statement = $parser->parseStatement();
-
+    $statement = new Parser(new Lexer($engine, $content)->run(), $content)->parseStatement();
     $result = $statement->run($engine->context);
 
     expect($statement)
