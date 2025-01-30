@@ -16,6 +16,7 @@ use IsaEken\BrickEngine\Expressions\IdentifierExpression;
 use IsaEken\BrickEngine\Expressions\LiteralExpression;
 use IsaEken\BrickEngine\Expressions\ObjectLiteralExpression;
 use IsaEken\BrickEngine\Expressions\ParamDefinitionExpression;
+use IsaEken\BrickEngine\Expressions\UnaryExpression;
 use IsaEken\BrickEngine\Statements\AssignmentStatement;
 use IsaEken\BrickEngine\Statements\BlockStatement;
 use IsaEken\BrickEngine\Statements\ExpressionStatement;
@@ -59,6 +60,9 @@ class Parser
         'UNSIGNED_RIGHT_SHIFT' => [10, 'right'],
         'LEFT_SHIFT_EQUAL' => [10, 'right'],
         'RIGHT_SHIFT_EQUAL' => [10, 'right'],
+
+        'INCREMENT'       => [10, 'right'],
+        'DECREMENT'       => [10, 'right'],
     ];
 
     public array $statements = [];
@@ -122,13 +126,20 @@ class Parser
             $this->eat($token);
 
             $nextMinPrecedence = $associativity === 'left' ? $operatorPrecedence + 1 : $operatorPrecedence;
-            $right = $this->parseExpressionPrecedence($nextMinPrecedence);
+            if (in_array($token, ['INCREMENT', 'DECREMENT'])) {
+                $left = new UnaryExpression(
+                    operator: $operatorToken->value,
+                    left: $left,
+                );
+            } else {
+                $right = $this->parseExpressionPrecedence($nextMinPrecedence);
 
-            $left = new BinaryExpression(
-                operator: $operatorToken->value,
-                left: $left,
-                right: $right,
-            );
+                $left = new BinaryExpression(
+                    operator: $operatorToken->value,
+                    left: $left,
+                    right: $right,
+                );
+            }
         }
 
         return $left;

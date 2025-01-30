@@ -41,6 +41,6 @@ class ForStatement extends Node implements StatementInterface
         $update = $this->update->compile();
         $body = $this->body->compile();
 
-        return "for ($init; $condition; $update) $body";
+        return "for ($init $condition; $update) $body";
     }
 }

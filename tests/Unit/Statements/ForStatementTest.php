@@ -12,12 +12,12 @@ test('can be compile to php', function () {
     $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
 
     expect($parser->parseStatement()->compile())
-        ->toBe('for ($i = 0; $i < 10; $i++) { }');
+        ->toBe('for ($i = 0; $i < 10; $i++) {}');
 
     $content = 'for (i = 0; i < 10; i++) { result = true; }';
     $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
     expect($parser->parseStatement()->compile())
-        ->toBe('for ($i = 0; $i < 10; $i++) { $result = true; }');
+        ->toBe('for ($i = 0; $i < 10; $i++) {$result = true;}');
 });
 
 // @todo add tests
