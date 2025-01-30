@@ -48,6 +48,10 @@ class ConsoleExtension implements ExtensionInterface
             'color' => fn ($color, ...$arguments) => $this->color($color, ...$arguments),
             'input' => fn () => readline(),
             'clear' => fn () => system('clear'),
+            'exit' => fn ($code = 0) => exit($code),
+            'cursor' => function ($line, $column) {
+                echo sprintf("\033[%d;%dH", $line, $column);
+            },
         ];
     }
 
