@@ -47,6 +47,7 @@ class ConsoleExtension implements ExtensionInterface
             },
             'color' => fn ($color, ...$arguments) => $this->color($color, ...$arguments),
             'input' => fn () => readline(),
+            'read' => fn () => fgets(STDIN),
             'clear' => function () {
                 echo "\033[2J\033[H";
             },
