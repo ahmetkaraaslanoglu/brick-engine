@@ -56,4 +56,14 @@ println(my_closure('sa'));
 
 console.color("green", "Hello colored world!\n");
 
+while (true) {
+    console.print(">>");
+    input = console.input();
+    console.println("You wrote: " + input);
+
+    if (input == 'exit') {
+        break;
+    }
+}
+
 return 0;
