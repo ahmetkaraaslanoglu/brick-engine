@@ -2,6 +2,7 @@
 
 namespace IsaEken\BrickEngine;
 
+use IsaEken\BrickEngine\Extensions\ArrExtension;
 use IsaEken\BrickEngine\Extensions\ConsoleExtension;
 use IsaEken\BrickEngine\Extensions\HttpExtension;
 use IsaEken\BrickEngine\Extensions\JsonExtension;
@@ -20,6 +21,7 @@ class BrickEngine
         JsonExtension::class,
         TimeExtension::class,
         StrExtension::class,
+        ArrExtension::class,
     ];
 
     public function __construct(public Context $context = new Context)
