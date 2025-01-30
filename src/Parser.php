@@ -308,16 +308,16 @@ class Parser
                 $this->eat('RIGHT_BRACKET');
 
                 $node = new ArrayAccessExpression(
-                    identifier: $node,
-                    index: null,
+                    left: $node,
+                    right: null,
                 );
             } else {
                 $indexExpression = $this->parseExpression();
                 $this->eat('RIGHT_BRACKET');
 
                 $node = new ArrayAccessExpression(
-                    identifier: $node,
-                    index: $indexExpression,
+                    left: $node,
+                    right: $indexExpression,
                 );
             }
         }

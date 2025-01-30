@@ -16,5 +16,5 @@ foreach ($files as $file) {
     $context = new Context();
     $engine = new BrickEngine($context);
     $output = $engine->run($file);
-    echo $output->value->data . PHP_EOL;
+    echo $output->value?->data . PHP_EOL;
 }

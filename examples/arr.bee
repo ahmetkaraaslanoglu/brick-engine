@@ -1,0 +1,30 @@
+arr0 = [
+    [
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+    ],
+    [
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+    ],
+    [
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+        [1,2,3,4,5],
+    ],
+];
+
+foreach (arr0 as key0 => arr1) {
+    console.println(key0);
+    foreach (arr1 as key1 => arr2) {
+        console.println("\t" + key1);
+        foreach (arr2 as key2 => arr3) {
+            console.println("\t\t" + arr0[key0][key1][key2]);
+        }
+    }
+}

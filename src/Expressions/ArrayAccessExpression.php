@@ -13,38 +13,40 @@ use IsaEken\BrickEngine\Value;
 
 class ArrayAccessExpression extends Node implements ExpressionInterface
 {
-    public function __construct(ExpressionInterface $identifier, ExpressionInterface|null $index)
+    public function __construct(ExpressionInterface $left, ExpressionInterface|null $right = null)
     {
         parent::__construct([
             'type' => 'ARRAY_ACCESS',
-            'identifier' => $identifier,
-            'index' => $index,
+            'left' => $left,
+            'right' => $right,
         ]);
     }
 
     public function run(Runtime $runtime, Context $context): Value
     {
-        parent::run($runtime, $context);
+        if ($this->left::class !== IdentifierExpression::class) {
+            $array = $this->left->run($runtime, $context);
+        } else {
+            $identifier = $this->left->value;
+            if (! array_key_exists($identifier, $context->variables)) {
+                throw new VariableNotFoundException($identifier);
+            }
 
-        $this->assertType($this->identifier, IdentifierExpression::class);
-        $this->assertType($this->index, [IdentifierExpression::class, LiteralExpression::class]);
-
-        if (! array_key_exists($this->identifier->value, $context->variables)) {
-            throw new VariableNotFoundException($this->identifier->value);
+            $array = $context->variables[$identifier]->data;
         }
 
-        $index = $this->index ? $this->index->run($runtime, $context)?->data : null;
-        $array = $context->variables[$this->identifier->data['value']]->data;
+        $this->assertType($this->right, [IdentifierExpression::class, LiteralExpression::class]);
+        $key = $context->value($this->right->run($runtime, $context))?->data ?? 0;
 
-        if (! is_array($array)) {
-            throw new ArrayKeyNotFoundException();
+        if ($array instanceof Value) {
+            if (array_key_exists($key, $array->data ?? [])) {
+                $array = $array->data;
+            }
         }
 
-        if (array_key_exists($index, $array)) {
-            return $array[$index];
+        if (array_key_exists($key, $array ?? [])) {
+            return $array[$key];
         }
-
-        // throw new ArrayKeyNotFoundException(); @todo: throw this as an warning
 
         return new Value($context, ValueType::Null);
     }
