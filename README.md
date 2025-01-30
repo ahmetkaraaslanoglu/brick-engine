@@ -47,20 +47,34 @@ if (cart['total'] > 100) {
     return "You have a discount!";
 }
 
-response = fetch('https://api.example.com');
-response = json_decode(response);
-return response['message'];
+cart = {
+    total: cart['total'],
+    isPaid: false,
+    sendApiRequest: function (url) {
+        response = fetch(url);
+        response = json_decode(response);
+        return response['message'];
+    },
+};
+
+return {
+    success: true,
+    message: cart.sendApiRequest('https://api.example.com'),
+};
 BRICK;
 
 $engine = new BrickEngine();
 
 // Define functions to be used within the script
-$engine->context->functions['apply_discount'] = function () {
-    $this->context->cart['total'] -= 10; // Apply a discount of 10 units
-};
+$engine->context->setFunction('apply_discount', function () use ($engine) {
+    // resolve variable value
+    $value = fromValue($engine->context->variables['total']);
+    
+    return $value - 10;
+});
 
 // Define variables to be used in the script
-$engine->context->variables['cart'] = ['total' => 120];
+$engine->context->setVariable('total', 120);
 
 $result = $engine->run($script)->value->data;
 echo $result; // "You have a discount!" or API message
