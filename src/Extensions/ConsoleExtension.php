@@ -64,6 +64,11 @@ class ConsoleExtension implements ExtensionInterface
             'cursor' => function ($line, $column) {
                 echo sprintf("\033[%d;%dH", $line, $column);
             },
+            'log' => function (...$arguments) {
+                foreach ($arguments as $argument) {
+                    var_dump($argument);
+                }
+            }
         ];
     }
 
