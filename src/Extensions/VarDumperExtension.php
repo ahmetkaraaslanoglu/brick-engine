@@ -8,6 +8,9 @@ use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
+/**
+ * @deprecated
+ */
 class VarDumperExtension implements ExtensionInterface
 {
     public function __construct(public BrickEngine $engine)
