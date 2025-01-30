@@ -26,7 +26,7 @@ class JsonExtension implements ExtensionInterface
         $argument = $context->arguments[0];
         $data = $context->value($argument)->data;
 
-        return Value::from(json_encode($data));
+        return Value::from($context, json_encode($data));
     }
 
     public function json_decode(Context $context): Value
@@ -34,6 +34,6 @@ class JsonExtension implements ExtensionInterface
         $argument = $context->arguments[0];
         $data = $context->value($argument)->data;
 
-        return Value::from(json_decode($data, true));
+        return Value::from($context, json_decode($data, true));
     }
 }

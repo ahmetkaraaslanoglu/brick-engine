@@ -27,7 +27,7 @@ class ConsoleExtension implements ExtensionInterface
             print(sprintf("%s", $context->value($argument)->data));
         }
 
-        return new Value(ValueType::Void);
+        return new Value($context, ValueType::Void);
     }
 
     public function println(Context $context): Value
@@ -36,6 +36,6 @@ class ConsoleExtension implements ExtensionInterface
             print(sprintf("%s\n", $context->value($argument)->data));
         }
 
-        return new Value(ValueType::Void);
+        return new Value($context, ValueType::Void);
     }
 }

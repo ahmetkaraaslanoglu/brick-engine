@@ -27,6 +27,6 @@ class HttpExtension implements ExtensionInterface
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         curl_close($curl);
-        return Value::from($response);
+        return Value::from($context, $response);
     }
 }

@@ -30,6 +30,6 @@ class VarDumperExtension implements ExtensionInterface
             }
         }
 
-        return new Value(ValueType::Void);
+        return new Value($context, ValueType::Void);
     }
 }
