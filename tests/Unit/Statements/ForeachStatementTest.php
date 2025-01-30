@@ -9,8 +9,9 @@ use IsaEken\BrickEngine\Statements\ForeachStatement;
 use IsaEken\BrickEngine\Value;
 
 test('can parse foreach with value only', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'arr' => Value::from([1, 2, 3]),
+        'arr' => Value::from($emptyContext, [1, 2, 3]),
     ]));
     $content = 'foreach (arr as value) { x = value; }';
     $lexer = new Lexer($engine, $content);
@@ -28,8 +29,9 @@ test('can parse foreach with value only', function () {
 });
 
 test('can parse foreach with key and value', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(variables: [
-        'arr' => Value::from(['foo' => 'bar', 'baz' => 'qux']),
+        'arr' => Value::from($emptyContext, ['foo' => 'bar', 'baz' => 'qux']),
     ]));
     $content = 'foreach (arr as key => value) { x = value; y = key; }';
     $lexer = new Lexer($engine, $content);
@@ -49,8 +51,9 @@ test('can parse foreach with key and value', function () {
 });
 
 test('can parse foreach with multiple statements', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(variables: [
-        'arr' => Value::from([1, 2, 3]),
+        'arr' => Value::from($emptyContext, [1, 2, 3]),
     ]));
     $content = 'foreach (arr as value) { 
         x = value + 1;
@@ -76,9 +79,10 @@ test('can parse foreach with multiple statements', function () {
 });
 
 test('can parse nested foreach loops', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(variables: [
-        'arr1' => Value::from([1, 2, 3]),
-        'arr2' => Value::from([4, 5, 6]),
+        'arr1' => Value::from($emptyContext, [1, 2, 3]),
+        'arr2' => Value::from($emptyContext, [4, 5, 6]),
     ]));
     $content = 'foreach (arr1 as value1) { 
         foreach (arr2 as value2) {

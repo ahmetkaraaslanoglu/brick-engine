@@ -45,6 +45,6 @@ class ArrayLiteralExpression extends Node implements ExpressionInterface
             }
         }
 
-        return new Value(ValueType::Array, $elements);
+        return new Value($context, ValueType::Array, $elements);
     }
 }

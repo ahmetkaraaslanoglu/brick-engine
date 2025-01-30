@@ -27,7 +27,7 @@ class ArrayElementExpression extends Node implements ExpressionInterface
         $key = $this->key ? $this->key->run($context) : null;
         $value = $this->value->run($context);
 
-        return new Value(ValueType::ArrayElement, [
+        return new Value($context, ValueType::ArrayElement, [
             'spread' => $this->spread,
             'key' => $key,
             'value' => $value,

@@ -43,6 +43,6 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
 
         // throw new ArrayKeyNotFoundException(); @todo: throw this as an warning
 
-        return new Value(ValueType::Null);
+        return new Value($context, ValueType::Null);
     }
 }

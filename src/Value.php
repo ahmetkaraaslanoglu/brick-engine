@@ -4,17 +4,17 @@ namespace IsaEken\BrickEngine;
 
 use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Exceptions\InternalCriticalException;
+use IsaEken\BrickEngine\Runtime\Context;
 
 class Value
 {
-    public ValueType $type;
-
-    public mixed $data;
-
-    public function __construct(ValueType $type, mixed $data = null)
+    public function __construct(
+        public Context $context,
+        public ValueType $type,
+        public mixed $data = null
+    )
     {
-        $this->type = $type;
-        $this->data = $data;
+        // ...
     }
 
     public function is(ValueType $type): bool
@@ -98,36 +98,36 @@ class Value
 
                 return $array;
             })(),
-            ValueType::Identifier => $value->data, // @todo: get value from variable
+            ValueType::Identifier => self::real($value->context->value($value)),
             ValueType::Function => $value->data, // @todo: function reference
             default => null,
         };
     }
 
-    public static function from(mixed $value): Value
+    public static function from(Context $context, mixed $value): Value
     {
         if (is_bool($value)) {
-            return new Value(ValueType::Boolean, $value);
+            return new Value($context, ValueType::Boolean, $value);
         }
 
         if (is_numeric($value)) {
-            return new Value(ValueType::Numeric, $value);
+            return new Value($context, ValueType::Numeric, $value);
         }
 
         if (is_string($value)) {
-            return new Value(ValueType::String, $value);
+            return new Value($context, ValueType::String, $value);
         }
 
         if (is_array($value)) {
-            $items = array_map(function ($item) {
-                return Value::from($item);
+            $items = array_map(function ($item) use ($context) {
+                return Value::from($context, $item);
             }, $value);
 
-            return new Value(ValueType::Array, $items);
+            return new Value($context, ValueType::Array, $items);
         }
 
         if ($value === null) {
-            return new Value(ValueType::Null);
+            return new Value($context, ValueType::Null);
         }
 
         throw new InternalCriticalException("Unsupported value type: " . gettype($value));

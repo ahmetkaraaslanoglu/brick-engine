@@ -9,9 +9,10 @@ use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 test('can parse addition', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(10),
-        'b' => Value::from(20),
+        'a' => Value::from($emptyContext, 10),
+        'b' => Value::from($emptyContext, 20),
     ]));
     $content = 'a + b';
     $lexer = new Lexer($engine, $content);
@@ -27,9 +28,10 @@ test('can parse addition', function () {
 });
 
 test('can parse subtraction', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(10),
-        'b' => Value::from(20),
+        'a' => Value::from($emptyContext, 10),
+        'b' => Value::from($emptyContext, 20),
     ]));
     $content = 'a - b';
     $lexer = new Lexer($engine, $content);
@@ -45,9 +47,10 @@ test('can parse subtraction', function () {
 });
 
 test('can parse comparison', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(10),
-        'b' => Value::from(20),
+        'a' => Value::from($emptyContext, 10),
+        'b' => Value::from($emptyContext, 20),
     ]));
     $content = 'a > b';
     $lexer = new Lexer($engine, $content);
@@ -63,9 +66,10 @@ test('can parse comparison', function () {
 });
 
 test('can parse equality', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(10),
-        'b' => Value::from(20),
+        'a' => Value::from($emptyContext, 10),
+        'b' => Value::from($emptyContext, 20),
     ]));
     $content = 'a == b';
     $lexer = new Lexer($engine, $content);
@@ -81,9 +85,10 @@ test('can parse equality', function () {
 });
 
 test('can parse logical operators', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(true),
-        'b' => Value::from(false),
+        'a' => Value::from($emptyContext, true),
+        'b' => Value::from($emptyContext, false),
     ]));
     $content = 'a && b';
     $lexer = new Lexer($engine, $content);
@@ -111,8 +116,9 @@ test('can parse logical operators', function () {
 });
 
 test('can parse left is variable', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'var' => Value::from(10),
+        'var' => Value::from($emptyContext, 10),
     ]));
     $content = 'var + 1';
     $lexer = new Lexer($engine, $content);
@@ -128,8 +134,9 @@ test('can parse left is variable', function () {
 });
 
 test('can parse right is variable', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'var' => Value::from(10),
+        'var' => Value::from($emptyContext, 10),
     ]));
     $content = '1 + var';
     $lexer = new Lexer($engine, $content);

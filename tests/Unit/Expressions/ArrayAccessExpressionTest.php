@@ -9,8 +9,9 @@ use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 test('can parse array access with numeric index', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'arr' => Value::from([42]),
+        'arr' => Value::from($emptyContext, [42]),
     ]));
 
     $content = 'arr[0]';
@@ -27,8 +28,9 @@ test('can parse array access with numeric index', function () {
 });
 
 test('can parse array access with index', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'arr' => Value::from([10, 20, 30]),
+        'arr' => Value::from($emptyContext, [10, 20, 30]),
     ]));
 
     $content = 'arr[1]';

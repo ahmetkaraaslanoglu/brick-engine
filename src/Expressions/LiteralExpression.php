@@ -26,6 +26,7 @@ class LiteralExpression extends Node implements ExpressionInterface
     {
         if ($this->literal === 'NUMBER') {
             return new Value(
+                context: $context,
                 type: ValueType::Numeric,
                 data: is_float($this->raw) ? floatval($this->raw) : intval($this->raw),
             );
@@ -33,6 +34,7 @@ class LiteralExpression extends Node implements ExpressionInterface
 
         if ($this->literal === 'STRING') {
             return new Value(
+                context: $context,
                 type: ValueType::String,
                 data: strval($this->raw),
             );
@@ -40,6 +42,7 @@ class LiteralExpression extends Node implements ExpressionInterface
 
         if ($this->literal === 'TRUE' || $this->literal === 'FALSE') {
             return new Value(
+                context: $context,
                 type: ValueType::Boolean,
                 data: $this->literal === 'TRUE',
             );
@@ -47,6 +50,7 @@ class LiteralExpression extends Node implements ExpressionInterface
 
         if ($this->literal === 'NULL') {
             return new Value(
+                context: $context,
                 type: ValueType::Null,
                 data: null,
             );

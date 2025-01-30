@@ -32,7 +32,7 @@ class BinaryExpression extends Node implements ExpressionInterface
         $right = $this->resolveValue($context, 'right');
 
         if ($operator === '+' && ($left->is(ValueType::String) || $right->is(ValueType::String))) {
-            return new Value(ValueType::String, $left->data . $right->data);
+            return new Value($context, ValueType::String, $left->data . $right->data);
         }
 
         if ($operator == '+=') {
@@ -57,20 +57,20 @@ class BinaryExpression extends Node implements ExpressionInterface
         }
 
         if (in_array($operator, ['+', '-', '*', '/', '%'])) {
-            return $this->calculate($left, $right, $operator);
+            return $this->calculate($context, $left, $right, $operator);
         }
 
         if (in_array($operator, ['&&', '||', '==', '!=', '>', '<', '>=', '<=', '===', '!==', '??', '?:'])) {
-            return $this->compare($left, $right, $operator);
+            return $this->compare($context, $left, $right, $operator);
         }
 
         throw new UnsupportedException("Unsupported operator: {$operator}");
     }
 
-    private function calculate(Value $left, Value $right, string $operator): Value
+    private function calculate(Context $context, Value $left, Value $right, string $operator): Value
     {
-        return new Value(ValueType::Numeric, match ($operator) {
-            '+' => $left->data + $right->data,
+        return new Value($context, ValueType::Numeric, match ($operator) {
+            '+' => \fromValue($left) + \fromValue($right),
             '-' => $left->data - $right->data,
             '*' => $left->data * $right->data,
             '/' => $left->data / $right->data,
@@ -79,10 +79,10 @@ class BinaryExpression extends Node implements ExpressionInterface
         });
     }
 
-    private function compare(Value $left, Value $right, string $operator): Value
+    private function compare(Context $context, Value $left, Value $right, string $operator): Value
     {
-        return new Value(ValueType::Boolean, match ($operator) {
-            '&&' => $left->data && $right->data,
+        return new Value($context, ValueType::Boolean, match ($operator) {
+            '&&' => \fromValue($left) && \fromValue($right),
             '||' => $left->data || $right->data,
             '==' => $left->data == $right->data,
             '!=' => $left->data != $right->data,

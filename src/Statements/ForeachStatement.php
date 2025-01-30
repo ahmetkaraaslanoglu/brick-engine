@@ -38,7 +38,7 @@ class ForeachStatement extends Node implements StatementInterface
                 $keyName = $right->data['key']->data;
                 $valueName = $right->data['value']->data;
 
-                $context->variables[$keyName] = new Value(ValueType::String, $key);
+                $context->variables[$keyName] = new Value($context, ValueType::String, $key);
             } else {
                 $valueName = $right->data;
             }

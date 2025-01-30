@@ -20,6 +20,6 @@ class IdentifierExpression extends Node implements ExpressionInterface
 
     public function run(Context $context): Value
     {
-        return new Value(ValueType::Identifier, $this->value);
+        return new Value($context, ValueType::Identifier, $this->value);
     }
 }

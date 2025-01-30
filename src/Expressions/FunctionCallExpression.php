@@ -39,7 +39,7 @@ class FunctionCallExpression extends Node implements ExpressionInterface
         $value = $context->functions[$callee]($context);
 
         if ($value instanceof ExecutionResult) {
-            return $value->value ?? new Value(ValueType::Void);
+            return $value->value ?? new Value($context, ValueType::Void);
         }
 
         return $value;

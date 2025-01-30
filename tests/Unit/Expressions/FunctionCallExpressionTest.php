@@ -9,8 +9,9 @@ use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 test('can parse function call without arguments', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => Value::from(42),
+        'test' => fn () => Value::from($emptyContext, 42),
     ]));
     $content = 'test()';
     $lexer = new Lexer($engine, $content);
@@ -43,12 +44,13 @@ test('can parse function call with single argument', function () {
 });
 
 test('can parse function call with multiple arguments', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(functions: [
         'test' => function (Context $context) {
             $arg1 = $context->value($context->arguments[0])->data;
             $arg2 = $context->value($context->arguments[1])->data;
             $arg3 = $context->value($context->arguments[2])->data;
-            return Value::from($arg1 . $arg2 . $arg3);
+            return Value::from($context, $arg1 . $arg2 . $arg3);
         },
     ]));
     $content = 'test(1, "two", true)';
@@ -65,16 +67,17 @@ test('can parse function call with multiple arguments', function () {
 });
 
 test('can parse function call with expression arguments', function () {
+    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from(10),
-        'b' => Value::from(20),
-        'x' => Value::from(5),
-        'y' => Value::from(2),
+        'a' => Value::from($emptyContext, 10),
+        'b' => Value::from($emptyContext, 20),
+        'x' => Value::from($emptyContext, 5),
+        'y' => Value::from($emptyContext, 2),
     ], [
-        'test' => function ($context) {
+        'test' => function ($context) use ($emptyContext) {
             $arg1 = $context->value($context->arguments[0])->data;
             $arg2 = $context->value($context->arguments[1])->data;
-            return Value::from($arg1 + $arg2);
+            return Value::from($emptyContext, $arg1 + $arg2);
         },
     ]));
     $content = 'test(a + b, x > y)';

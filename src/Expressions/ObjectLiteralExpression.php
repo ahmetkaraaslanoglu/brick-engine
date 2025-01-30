@@ -24,6 +24,6 @@ class ObjectLiteralExpression extends Node implements ExpressionInterface
             return $context->value($value->run($context));
         }, $this->elements);
 
-        return new Value(ValueType::Object, $object);
+        return new Value($context, ValueType::Object, $object);
     }
 }
