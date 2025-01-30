@@ -1,5 +1,6 @@
 multiply = 2 * 2;
 divide = 2 / 2;
+negative = -1;
 this_is_an_number1 = 42 + 1 + 5;
 this_is_an_number2 = 42 + 0.5;
 this_is_an_string = "Hello, " + "world" + "!";

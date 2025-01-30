@@ -356,6 +356,18 @@ class Parser
         $current = $this->token;
         $tokens = ['NUMBER', 'STRING', 'TRUE', 'FALSE', 'NULL'];
 
+        if ($current->token === 'MINUS' && $this->peek()->token === 'NUMBER') {
+            $this->eat('MINUS');
+            $current = $this->token;
+            $this->eat($this->token->token);
+
+            $value = $current->value;
+            $value = is_float($value) ? floatval($value) : intval($value);
+            $value = -$value;
+
+            return new LiteralExpression($current->token, $value);
+        }
+
         if (in_array($current->token, $tokens)) {
             $this->eat($current->token);
 
