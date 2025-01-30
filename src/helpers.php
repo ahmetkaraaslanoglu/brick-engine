@@ -8,7 +8,9 @@ if (! function_exists('value')) {
     {
         return Value::from(new Context(), $value);
     }
+}
 
+if (! function_exists('fromValue')) {
     function fromValue(Value $value): mixed
     {
         return Value::real($value);
