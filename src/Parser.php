@@ -39,6 +39,7 @@ class Parser
         'PLUS'            => [60, 'left'], // +
         'MINUS'           => [60, 'left'], // -
         'LESS_THAN'       => [50, 'left'], // <
+        'ASTERISK' => [70, 'left'],
         'GREATER_THAN'    => [50, 'left'],
         'LESS_THAN_OR_EQUAL' => [50, 'left'],
         'GREATER_THAN_OR_EQUAL' => [50, 'left'],
