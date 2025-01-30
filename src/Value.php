@@ -64,8 +64,8 @@ class Value
             return sprintf("array(%s) [\n%s\n]", count($this->data), implode("\n", $items));
         }
 
-        if ($this->type === ValueType::Function) {
-            return 'function';
+        if ($this->type === ValueType::Closure) {
+            return 'closure';
         }
 
         if ($this->type === ValueType::Void) {
@@ -99,7 +99,7 @@ class Value
                 return $array;
             })(),
             ValueType::Identifier => self::real($value->context->value($value)),
-            ValueType::Function => $value->data, // @todo: function reference
+            ValueType::Closure => null, // @todo: closure reference
             default => null,
         };
     }

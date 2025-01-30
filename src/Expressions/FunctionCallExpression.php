@@ -27,11 +27,14 @@ class FunctionCallExpression extends Node implements ExpressionInterface
         $arguments = array_map(fn ($argument) => $argument->run($context), $this->arguments);
         $arguments = array_map(fn ($argument) => fromValue($argument), $arguments);
 
-        if (! array_key_exists($callee, $context->functions)) {
+        // @todo deprecate old function calling
+        if (array_key_exists($callee, $context->functions)) {
+            $value = (clone $context)->functions[$callee](...$arguments);
+        } else if (array_key_exists($callee, $context->variables) && $context->variables[$callee]->type === ValueType::Closure) {
+            $value = ($context->variables[$callee]->data)(...$arguments);
+        } else {
             throw new FunctionNotFoundException($callee);
         }
-
-        $value = (clone $context)->functions[$callee](...$arguments);
 
         if ($value) {
             return \value($value);

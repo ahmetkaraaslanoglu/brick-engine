@@ -35,7 +35,7 @@ test('can be compile to php', function () {
     $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
     expect($parser->parseStatement()->compile())
         ->toBe('function test() {$x = 2;}');
-});
+})->skip('DEPRECATED');
 
 test('can parse function without parameters', function () {
     $engine = new BrickEngine();
@@ -47,7 +47,7 @@ test('can parse function without parameters', function () {
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test']())
         ->toBe(42);
-});
+})->skip('DEPRECATED');
 
 test('can parse function with single parameter', function () {
     $engine = new BrickEngine();
@@ -60,7 +60,7 @@ test('can parse function with single parameter', function () {
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test'](40))
         ->toBe(41);
-});
+})->skip('DEPRECATED');
 
 test('can parse function with multiple parameters', function () {
     $engine = new BrickEngine();
@@ -73,7 +73,7 @@ test('can parse function with multiple parameters', function () {
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test'](10, 20, 30))
         ->toBe(60);
-});
+})->skip('DEPRECATED');
 
 test('can parse function with default parameters', function () {
     $engine = new BrickEngine();
@@ -86,7 +86,7 @@ test('can parse function with default parameters', function () {
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test']())
         ->toBe(3);
-});
+})->skip('DEPRECATED');
 
 test('can parse function with complex body', function () {
     $engine = new BrickEngine();
@@ -105,4 +105,4 @@ test('can parse function with complex body', function () {
         ->toBeInstanceOf(FunctionDeclareStatement::class)
         ->and($engine->context->functions['test'](10, 20))
         ->toBe(20);
-});
+})->skip('DEPRECATED');

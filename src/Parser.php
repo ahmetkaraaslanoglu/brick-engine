@@ -5,12 +5,12 @@ namespace IsaEken\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\DataObjects\Token;
-use IsaEken\BrickEngine\Exceptions\InvalidSyntaxException;
 use IsaEken\BrickEngine\Exceptions\UnexpectedTokenException;
 use IsaEken\BrickEngine\Expressions\ArrayAccessExpression;
 use IsaEken\BrickEngine\Expressions\ArrayElementExpression;
 use IsaEken\BrickEngine\Expressions\ArrayLiteralExpression;
 use IsaEken\BrickEngine\Expressions\BinaryExpression;
+use IsaEken\BrickEngine\Expressions\ClosureExpression;
 use IsaEken\BrickEngine\Expressions\FunctionCallExpression;
 use IsaEken\BrickEngine\Expressions\IdentifierExpression;
 use IsaEken\BrickEngine\Expressions\LiteralExpression;
@@ -106,6 +106,23 @@ class Parser
         return $this->parseExpressionPrecedence(0);
     }
 
+    public function parseClosureExpression(): ExpressionInterface
+    {
+        $this->eat('FUNCTION');
+        if ($this->token->token === 'IDENTIFIER') {
+            $callee = $this->token->value;
+            $this->eat('IDENTIFIER');
+        } else {
+            $callee = null;
+        }
+        $this->eat('LEFT_PARENTHESIS');
+        $arguments = $this->parseFunctionArguments();
+        $this->eat('RIGHT_PARENTHESIS');
+        $body = $this->parseBlock();
+
+        return new ClosureExpression($callee, $arguments, $body);
+    }
+
     public function parseExpressionPrecedence(int $minPrecedence = 0): ExpressionInterface
     {
         $left = $this->parseFactor();
@@ -147,6 +164,10 @@ class Parser
 
     public function parseFactor(): ExpressionInterface
     {
+        if ($this->token->token === 'FUNCTION') {
+            return $this->parseClosureExpression();
+        }
+
         if ($this->token->value === 'LEFT_PARENTHESIS') {
             $this->eat('LEFT_PARENTHESIS');
             $expression = $this->parseExpression();
@@ -379,7 +400,9 @@ class Parser
         }
 
         $expression = $this->parseExpression();
-        $this->eat('SEMICOLON');
+        if (! in_array($expression::class, [ClosureExpression::class])) {
+            $this->eat('SEMICOLON');
+        }
 
         return new ExpressionStatement($expression);
     }
@@ -562,9 +585,10 @@ class Parser
             return $this->parseForeachStatement();
         }
 
-        if ($this->token->token === 'FUNCTION') {
-            return $this->parseFunctionDeclareStatement();
-        }
+        // @todo deprecate this
+//        if ($this->token->token === 'FUNCTION') {
+//            return $this->parseFunctionDeclareStatement();
+//        }
 
         if ($this->token->token === 'RETURN') {
             return $this->parseReturnStatement();

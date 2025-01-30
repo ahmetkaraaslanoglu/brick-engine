@@ -16,7 +16,6 @@ if (this_is_an_boolean || true) {
     println("false");
 }
 
-/*
 function run_while_loop(times = 5) {
     index = 0;
     while (index < times) {
@@ -26,7 +25,6 @@ function run_while_loop(times = 5) {
 }
 
 run_while_loop(10);
-*/
 
 for (index = 0; index < 10; index += 1) {
     println(index);
@@ -35,5 +33,18 @@ for (index = 0; index < 10; index += 1) {
 foreach (this_is_an_array as key => value) {
     println(key, value);
 }
+
+an_empty_object = {};
+println(an_empty_object);
+
+an_object = {
+    hello: 'world',
+    foo: 1,
+    bar: true,
+    baz: function (name) {
+        return 'hello ' + name + '!';
+    },
+};
+println(an_object);
 
 return 0;
