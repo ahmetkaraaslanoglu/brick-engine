@@ -28,3 +28,8 @@ foreach (arr0 as key0 => arr1) {
         }
     }
 }
+
+console.println("length: " + arr.length(arr0));
+console.println("keys: " + arr.length(arr.keys(arr0)));
+console.println("values: " + arr.length(arr.values(arr0)));
+console.println("merged: " + arr.length(arr.merge(arr0, arr0)));
