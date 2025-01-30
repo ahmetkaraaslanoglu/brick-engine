@@ -2,17 +2,16 @@
 
 namespace IsaEken\BrickEngine\Extensions;
 
+use GuzzleHttp\Client;
 use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Contracts\ExtensionInterface;
-use IsaEken\BrickEngine\Enums\ValueType;
-use IsaEken\BrickEngine\Runtime\Context;
-use IsaEken\BrickEngine\Value;
 
 class HttpExtension implements ExtensionInterface
 {
+    private Client $client;
     public function __construct(public BrickEngine $engine)
     {
-        // ...
+        $this->client = new Client();
     }
 
     public function register(): void
@@ -20,42 +19,26 @@ class HttpExtension implements ExtensionInterface
         $this->engine->context->functions['fetch'] = [$this, 'fetch'];
 
         $this->engine->context->namespaces['http'] = [
-            'get' => function ($url) {
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($curl);
-                curl_close($curl);
-                return $response;
+            'get' => function ($url, $params = []) {
+                $response = $this->client->request('GET', $url, $params);
+                return $response->getBody()->getContents();
             },
-            'post' => function ($url, $data) {
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_POST, true);
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($curl);
-                curl_close($curl);
-                return $response;
+            'post' => function ($url, $params = []) {
+                $response = $this->client->request('POST', $url, $params);
+                return $response->getBody()->getContents();
             },
-            'put' => function ($url, $data) {
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($curl);
-                curl_close($curl);
-                return $response;
+            'put' => function ($url, $params = []) {
+                $response = $this->client->request('PUT', $url, $params);
+                return $response->getBody()->getContents();
             },
-            'delete' => function ($url) {
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($curl);
-                curl_close($curl);
-                return $response;
+            'delete' => function ($url, $params = []) {
+                $response = $this->client->request('DELETE', $url, $params);
+                return $response->getBody()->getContents();
             },
         ];
     }
 
+    /** @deprecated  */
     public function fetch(string $url)
     {
         $curl = curl_init($url);
