@@ -1,0 +1,48 @@
+console.println("Calculator (type 'exit' to quit)");
+
+while (true) {
+    console.print("Enter first number: ");
+    num1 = console.input();
+    if (num1 == "exit") {
+        console.println("Exiting calculator...");
+        break;
+    }
+
+    console.print("Enter second number: ");
+    num2 = console.input();
+    if (num2 == "exit") {
+        console.println("Exiting calculator...");
+        break;
+    }
+
+    console.print("Enter operation (+, -, *, /): ");
+    operation = console.input();
+    if (operation == "exit") {
+        console.println("Exiting calculator...");
+        break;
+    }
+
+    if (operation == "+") {
+        result = num1 + num2;
+    }
+    else if (operation == "-") {
+        result = num1 - num2;
+    }
+    else if (operation == "*") {
+        result = num1 * num2;
+    }
+    else if (operation == "/") {
+        if (num2 == 0) {
+            console.println("Error: Cannot divide by 0!");
+            continue;
+        }
+        result = num1 / num2;
+    }
+    else {
+        console.println("Error: Unsupported operation type!");
+        continue;
+    }
+
+    console.println("Result: " + result);
+    console.println();
+}

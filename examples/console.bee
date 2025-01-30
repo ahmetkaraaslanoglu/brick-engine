@@ -1,0 +1,25 @@
+array = [1, 2, 3, 4/*];
+
+function size(array) {
+    return arr.length(array);
+}
+
+function print_r(array) {
+    for(i = 0; i < size(array); i += 1) {
+        console.println(array[i]);
+    }
+}
+
+function add(array, value) {
+    index = size(array);
+    array[index] = value;
+}
+
+function remove(array, index) {
+    array[index] = null;
+}
+
+add(array, 10);
+remove(array, 2);
+print_r(array);
+

