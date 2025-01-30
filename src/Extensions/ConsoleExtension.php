@@ -40,6 +40,11 @@ class ConsoleExtension implements ExtensionInterface
                     print(sprintf("%s\n", $argument));
                 }
             },
+            'var_dump' => function (...$arguments) {
+                foreach ($arguments as $argument) {
+                    var_dump($argument);
+                }
+            },
             'color' => fn ($color, ...$arguments) => $this->color($color, ...$arguments),
             'input' => fn () => readline(),
         ];

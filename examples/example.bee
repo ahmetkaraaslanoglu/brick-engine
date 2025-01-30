@@ -56,7 +56,16 @@ println(my_closure('sa'));
 
 console.color("green", "Hello colored world!\n");
 
-while (true) {
+console.println(json.encode({
+    hello: 'world',
+    foo: 'bar',
+    bar: 123,
+}));
+
+console.var_dump(json.decode('{ "userId": 1, "id": 1, "title": "delectus aut autem", "completed": false }'));
+
+current = 0;
+while (current < 5) {
     console.print(">>");
     input = console.input();
     console.println("You wrote: " + input);
@@ -64,6 +73,8 @@ while (true) {
     if (input == 'exit') {
         break;
     }
+
+    current += 1;
 }
 
 return 0;
