@@ -9,10 +9,9 @@ use IsaEken\BrickEngine\Statements\ForeachStatement;
 use IsaEken\BrickEngine\Value;
 
 test('can parse foreach with value only', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'arr' => Value::from($emptyContext, [1, 2, 3]),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('arr', [1,2,3]);
+
     $content = 'foreach (arr as value) { x = value; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -29,10 +28,12 @@ test('can parse foreach with value only', function () {
 });
 
 test('can parse foreach with key and value', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context(variables: [
-        'arr' => Value::from($emptyContext, ['foo' => 'bar', 'baz' => 'qux']),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('arr', [
+        'foo' => 'bar',
+        'baz' => 'qux',
+    ]);
+
     $content = 'foreach (arr as key => value) { x = value; y = key; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -51,10 +52,9 @@ test('can parse foreach with key and value', function () {
 });
 
 test('can parse foreach with multiple statements', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context(variables: [
-        'arr' => Value::from($emptyContext, [1, 2, 3]),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('arr', [1,2,3]);
+
     $content = 'foreach (arr as value) { 
         x = value + 1;
         y = value + 1;

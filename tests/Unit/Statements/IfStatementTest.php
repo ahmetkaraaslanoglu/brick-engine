@@ -9,10 +9,9 @@ use IsaEken\BrickEngine\Statements\IfStatement;
 use IsaEken\BrickEngine\Value;
 
 test('can parse if statement without else', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 10),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('x', 10);
+
     $content = 'if (x > 5) { result = true; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -29,10 +28,9 @@ test('can parse if statement without else', function () {
 });
 
 test('can parse if statement with else', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 4),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('x', 4);
+
     $content = 'if (x > 5) { result = true; } else { result = false; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -49,11 +47,11 @@ test('can parse if statement with else', function () {
 });
 
 test('can parse if statement with complex condition', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 10),
-        'y' => Value::from($emptyContext, 5),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 10)
+        ->setVariable('y', 5);
+
     $content = 'if (x > 5 && y < 10) { result = true; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -70,11 +68,11 @@ test('can parse if statement with complex condition', function () {
 });
 
 test('can parse nested if statements', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 10),
-        'y' => Value::from($emptyContext, 5),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 10)
+        ->setVariable('y', 5);
+
     $content = 'if (x > 5) { if (y < 10) { result = true; } }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();

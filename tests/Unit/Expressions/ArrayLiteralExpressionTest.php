@@ -1,11 +1,9 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Expressions\ArrayLiteralExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Value;
 
 test('can parse empty array', function () {
     $engine = new BrickEngine();

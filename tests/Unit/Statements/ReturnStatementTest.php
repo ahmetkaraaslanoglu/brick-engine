@@ -47,11 +47,11 @@ test('can parse return with literal value', function () {
 });
 
 test('can parse return with expression', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 10),
-        'y' => Value::from($emptyContext, 20),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 10)
+        ->setVariable('y', 20);
+
     $content = 'return x + y;';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -70,10 +70,10 @@ test('can parse return with expression', function () {
 });
 
 test('can parse return with function call', function () {
-    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => Value::from($emptyContext, 42),
+        'test' => fn () => \value(42),
     ]));
+
     $content = 'return test();';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();

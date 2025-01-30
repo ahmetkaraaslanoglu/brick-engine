@@ -9,10 +9,9 @@ use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
 test('can parse simple identifier', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'variable' => Value::from($emptyContext, 42),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('variable', 42);
+
     $content = 'variable';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -27,10 +26,9 @@ test('can parse simple identifier', function () {
 });
 
 test('can parse identifier with underscore', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'my_variable' => Value::from($emptyContext, 42),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('my_variable', 42);
+
     $content = 'my_variable';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -45,10 +43,9 @@ test('can parse identifier with underscore', function () {
 });
 
 test('can parse identifier with numbers', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'variable123' => Value::from($emptyContext, 42),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('variable123', 42);
+
     $content = 'variable123';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();

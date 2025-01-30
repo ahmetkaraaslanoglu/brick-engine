@@ -10,10 +10,9 @@ use IsaEken\BrickEngine\Statements\WhileStatement;
 use IsaEken\BrickEngine\Value;
 
 test('can parse basic while loop', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 0),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('x', 0);
+
     $content = 'while (x < 10) { x = x + 1; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -30,11 +29,11 @@ test('can parse basic while loop', function () {
 });
 
 test('can parse while loop with complex condition', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 0),
-        'y' => Value::from($emptyContext, 10),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 0)
+        ->setVariable('y', 10);
+
     $content = 'while (x < 10 && y > 0) { x = x + 1; }';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -51,12 +50,12 @@ test('can parse while loop with complex condition', function () {
 });
 
 test('can parse while loop with multiple statements', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 0),
-        'y' => Value::from($emptyContext, 0),
-        'z' => Value::from($emptyContext, 0),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 0)
+        ->setVariable('y', 0)
+        ->setVariable('z', 0);
+
     $content = 'while (x < 10) { 
         x = x + 1;
         y = x + 2;
@@ -81,11 +80,11 @@ test('can parse while loop with multiple statements', function () {
 });
 
 test('can parse nested while loops', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'x' => Value::from($emptyContext, 0),
-        'y' => Value::from($emptyContext, 0),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('x', 0)
+        ->setVariable('y', 0);
+
     $content = 'while (x < 10) { 
         while (y < 5) {
             y = y + 1;

@@ -26,11 +26,11 @@ test('can parse simple assignment', function () {
 });
 
 test('can parse assignment with expression', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'a' => Value::from($emptyContext, 10),
-        'b' => Value::from($emptyContext, 20),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context
+        ->setVariable('a', 10)
+        ->setVariable('b', 20);
+
     $content = 'x = a + b;';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();
@@ -85,9 +85,8 @@ test('can parse assignment with array', function () {
 });
 
 test('can parse assignment with function call', function () {
-    $emptyContext = new Context();
     $engine = new BrickEngine(new Context(functions: [
-        'test' => fn () => Value::from($emptyContext, 42),
+        'test' => fn () => \value(42),
     ]));
     $content = 'result = test();';
     $lexer = new Lexer($engine, $content);
@@ -105,9 +104,8 @@ test('can parse assignment with function call', function () {
 });
 
 test('can assign variable from a variable', function () {
-    $emptyContext = new Context();
     $engine = new BrickEngine(new Context([
-        'a' => Value::from($emptyContext, 42),
+        'a' => \value(42),
     ]));
     $content = 'b = a;';
     $lexer = new Lexer($engine, $content);

@@ -67,19 +67,19 @@ test('can parse function call with multiple arguments', function () {
 });
 
 test('can parse function call with expression arguments', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'a' => Value::from($emptyContext, 10),
-        'b' => Value::from($emptyContext, 20),
-        'x' => Value::from($emptyContext, 5),
-        'y' => Value::from($emptyContext, 2),
-    ], [
-        'test' => function ($context) use ($emptyContext) {
+    $engine = new BrickEngine(new Context(functions: [
+        'test' => function ($context) {
             $arg1 = $context->value($context->arguments[0])->data;
             $arg2 = $context->value($context->arguments[1])->data;
-            return Value::from($emptyContext, $arg1 + $arg2);
+            return \value($arg1 + $arg2);
         },
     ]));
+    $engine->context
+        ->setVariable('a', 10)
+        ->setVariable('b', 20)
+        ->setVariable('x', 5)
+        ->setVariable('y', 2);
+
     $content = 'test(a + b, x > y)';
     $lexer = new Lexer($engine, $content);
     $tokens = $lexer->run();

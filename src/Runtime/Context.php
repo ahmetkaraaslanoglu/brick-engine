@@ -17,6 +17,13 @@ class Context
         // ...
     }
 
+    public function setVariable(string $identifier, mixed $value): self
+    {
+        $this->variables[$identifier] = value($value);
+
+        return $this;
+    }
+
     public function value(Value $value): mixed
     {
         if ($value->is(ValueType::Identifier)) {

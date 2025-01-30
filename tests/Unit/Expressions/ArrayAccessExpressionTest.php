@@ -1,18 +1,13 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Expressions\ArrayAccessExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Runtime\Context;
-use IsaEken\BrickEngine\Value;
 
 test('can parse array access with numeric index', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'arr' => Value::from($emptyContext, [42]),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('arr', [42]);
 
     $content = 'arr[0]';
     $lexer = new Lexer($engine, $content);
@@ -28,10 +23,8 @@ test('can parse array access with numeric index', function () {
 });
 
 test('can parse array access with index', function () {
-    $emptyContext = new Context();
-    $engine = new BrickEngine(new Context([
-        'arr' => Value::from($emptyContext, [10, 20, 30]),
-    ]));
+    $engine = new BrickEngine();
+    $engine->context->setVariable('arr', [10, 20, 30]);
 
     $content = 'arr[1]';
     $lexer = new Lexer($engine, $content);
