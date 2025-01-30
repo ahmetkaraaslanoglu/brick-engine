@@ -1,0 +1,29 @@
+url = 'https://webhook.site/db97236d-9fae-4c6b-a8dc-c17b7273e22f';
+
+getParams = ["headers" => ["foo" => "bar"]];
+getResponse = http.get(url, getParams);
+console.println(getResponse);
+
+postParams = [
+    "headers" => ["foo" => true],
+    "body" => json.encode([
+        "ahmet" => "isa",
+    ])
+];
+
+postResponse = http.post(url, postParams);
+console.println(postResponse);
+
+
+putParams = [
+    "headers" => ["header1" => "1"],
+    "form_params" => ["1" => 2]
+];
+putResponse = http.put(url, putParams);
+console.println(putResponse);
+
+deleteParams = [
+    "headers" => ["deleteParams" => true]
+];
+deleteResponse = http.delete(url, deleteParams);
+console.println(deleteResponse);
