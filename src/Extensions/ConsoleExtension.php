@@ -47,7 +47,16 @@ class ConsoleExtension implements ExtensionInterface
             },
             'color' => fn ($color, ...$arguments) => $this->color($color, ...$arguments),
             'input' => fn () => readline(),
-            'read' => fn () => fgets(STDIN),
+            'read' => function () {
+                if (PHP_OS === 'WINNT') {
+                    throw new \Exception('Windows platform does not support this function.');
+                }
+
+                shell_exec('stty cbreak -echo');
+                $char = fgetc(STDIN);
+                shell_exec('stty sane');
+                return $char;
+            },
             'clear' => function () {
                 echo "\033[2J\033[H";
             },

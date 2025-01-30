@@ -6,6 +6,7 @@ use IsaEken\BrickEngine\Extensions\ArrExtension;
 use IsaEken\BrickEngine\Extensions\ConsoleExtension;
 use IsaEken\BrickEngine\Extensions\HttpExtension;
 use IsaEken\BrickEngine\Extensions\JsonExtension;
+use IsaEken\BrickEngine\Extensions\OsExtension;
 use IsaEken\BrickEngine\Extensions\StrExtension;
 use IsaEken\BrickEngine\Extensions\TimeExtension;
 use IsaEken\BrickEngine\Extensions\VarDumperExtension;
@@ -22,6 +23,7 @@ class BrickEngine
         TimeExtension::class,
         StrExtension::class,
         ArrExtension::class,
+        OsExtension::class,
     ];
 
     public function __construct(public Context $context = new Context)
