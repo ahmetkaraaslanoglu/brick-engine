@@ -64,6 +64,8 @@ console.println(json.encode({
 
 console.var_dump(json.decode('{ "userId": 1, "id": 1, "title": "delectus aut autem", "completed": false }'));
 
+console.clear();
+
 current = 0;
 while (current < 5) {
     console.print(">>");
