@@ -49,6 +49,7 @@ class Parser
         'NOT_EQUAL'       => [40, 'left'], // !=
         'AND'         => [30, 'left'], // &&
         'OR'           => [20, 'left'], // ||
+        'SLASH' => [70, 'left'],
 
         'PLUS_EQUAL'      => [10, 'right'],
         'MINUS_EQUAL'     => [10, 'right'],
