@@ -9,6 +9,34 @@ use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\FunctionDeclareStatement;
 use IsaEken\BrickEngine\Value;
 
+test('can be compile to php', function () {
+    $content = 'function test() { }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseStatement()->compile())
+        ->toBe('function test() {}');
+
+    $content = 'function test(x) { }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('function test($x) {}');
+
+    $content = 'function test(x, y) { }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('function test($x, $y) {}');
+
+    $content = 'function test(x = 1, y = 2) { }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('function test($x = 1, $y = 2) {}');
+
+    $content = 'function test() { x = 2; }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('function test() {$x = 2;}');
+});
+
 test('can parse function without parameters', function () {
     $engine = new BrickEngine();
     $content = 'function test() { return 42; }';

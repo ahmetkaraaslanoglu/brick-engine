@@ -1,12 +1,18 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\AssignmentStatement;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'x = 42;';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseStatement()->compile())
+        ->toBe('$x = 42;');
+});
 
 test('can parse simple assignment', function () {
     $engine = new BrickEngine();

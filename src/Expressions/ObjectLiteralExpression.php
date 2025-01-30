@@ -26,4 +26,12 @@ class ObjectLiteralExpression extends Node implements ExpressionInterface
 
         return new Value($context, ValueType::Object, $object);
     }
+
+    public function compile(): string
+    {
+        $elements = array_map(fn ($element) => $element->compile(), $this->elements);
+        $element = implode(', ', $elements);
+
+        return "(object) [$element]";
+    }
 }

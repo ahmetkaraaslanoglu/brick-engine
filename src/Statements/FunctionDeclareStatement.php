@@ -44,4 +44,14 @@ class FunctionDeclareStatement extends Node implements StatementInterface
 
         return new ExecutionResult();
     }
+
+    public function compile(): string
+    {
+        $callee = $this->callee;
+        $arguments = array_map(fn ($argument) => $argument->compile(), $this->arguments);
+        $arguments = implode(', ', $arguments);
+        $body = $this->body->compile();
+
+        return "function $callee($arguments) $body";
+    }
 }

@@ -1,13 +1,18 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\WhileStatement;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'while (x < 10) { result = true; }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseStatement()->compile())
+        ->toBe('while ($x < 10) {$result = true;}');
+});
 
 test('can parse basic while loop', function () {
     $engine = new BrickEngine();

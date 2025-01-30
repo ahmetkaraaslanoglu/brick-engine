@@ -5,6 +5,14 @@ use IsaEken\BrickEngine\Expressions\ArrayAccessExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 
+test('can be compile to php', function () {
+    $content = 'arr[]';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseIdentifierOrArrayAccess()->compile())
+        ->toBe('arr[]');
+});
+
 test('can parse array access with numeric index', function () {
     $engine = new BrickEngine();
     $engine->context->setVariable('arr', [42]);

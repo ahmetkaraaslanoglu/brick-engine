@@ -5,6 +5,28 @@ use IsaEken\BrickEngine\Expressions\ArrayLiteralExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 
+test('can be compile to php', function () {
+    $content = '[]';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('[]');
+
+    $content = '[1, 2, 3]';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('[1, 2, 3]');
+
+    $content = '[1 => "one", 2 => "two"]';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('[1 => "one", 2 => "two"]');
+
+    $content = '[1, "two", ...[3, 4, 5]]';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('[1, "two", ...[3, 4, 5]]');
+});
+
 test('can parse empty array', function () {
     $engine = new BrickEngine();
     $content = '[]';

@@ -32,4 +32,17 @@ class IfStatement extends Node implements StatementInterface
 
         return new ExecutionResult();
     }
+
+    public function compile(): string
+    {
+        $condition = $this->condition->compile();
+        $then = $this->then->compile();
+
+        if ($this->else) {
+            $else = $this->else->compile();
+            return "if ($condition) $then else $else";
+        }
+
+        return "if ($condition) $then";
+    }
 }

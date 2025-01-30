@@ -5,6 +5,13 @@ use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 use IsaEken\BrickEngine\Statements\BlockStatement;
 
+test('can be compile to php', function () {
+    $content = '{}';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseBlock()->compile())->toBe('{}');
+});
+
 test('can parse empty block', function () {
     $engine = new BrickEngine();
     $content = '{}';

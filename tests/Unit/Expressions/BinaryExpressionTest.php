@@ -4,8 +4,18 @@ use IsaEken\BrickEngine\BrickEngine;
 use IsaEken\BrickEngine\Expressions\BinaryExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Runtime\Context;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'a + b';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseExpression()->compile())->toBe('$a + $b');
+
+    $content = 'a + 15 + c';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseExpression()->compile())->toBe('$a + 15 + $c');
+});
 
 test('can parse addition', function () {
     $engine = new BrickEngine();

@@ -1,12 +1,22 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\ReturnStatement;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'return 42;';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('return 42;');
+
+    $content = 'return;';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('return;');
+});
 
 test('can parse return without value', function () {
     $engine = new BrickEngine();

@@ -49,4 +49,13 @@ class ForeachStatement extends Node implements StatementInterface
 
         return $result;
     }
+
+    public function compile(): string
+    {
+        $left = $this->left->compile();
+        $right = $this->right->compile();
+        $body = $this->body->compile();
+
+        return "foreach ($left as $right) $body";
+    }
 }

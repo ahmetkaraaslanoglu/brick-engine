@@ -1,12 +1,16 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Expressions\IdentifierExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Runtime\Context;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'variable';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('$variable');
+});
 
 test('can parse simple identifier', function () {
     $engine = new BrickEngine();

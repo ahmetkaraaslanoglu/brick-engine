@@ -1,12 +1,22 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
-use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Statements\IfStatement;
-use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'if (x > 5) { result = true; }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseStatement()->compile())
+        ->toBe('if ($x > 5) {$result = true;}');
+
+    $content = 'if (x > 5) { result = true; } else { result = false; }';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+    expect($parser->parseStatement()->compile())
+        ->toBe('if ($x > 5) {$result = true;} else {$result = false;}');
+});
 
 test('can parse if statement without else', function () {
     $engine = new BrickEngine();

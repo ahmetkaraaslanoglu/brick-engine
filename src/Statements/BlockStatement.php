@@ -36,4 +36,12 @@ class BlockStatement extends Node implements StatementInterface
 
         return new ExecutionResult();
     }
+
+    public function compile(): string
+    {
+        $statements = array_map(fn ($statement) => $statement->compile(), $this->data['statements']);
+        $statements = implode("\n", $statements);
+
+        return "{".$statements."}";
+    }
 }

@@ -112,4 +112,12 @@ class BinaryExpression extends Node implements ExpressionInterface
 
         return $object->run($context);
     }
+
+    public function compile(): string
+    {
+        $left = $this->left;
+        $right = $this->right;
+
+        return $left->compile() . " $this->operator " . $right->compile();
+    }
 }

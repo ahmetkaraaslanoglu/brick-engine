@@ -26,4 +26,14 @@ class ReturnStatement extends Node implements StatementInterface
             return: true,
         );
     }
+
+    public function compile(): string
+    {
+        if ($this->value) {
+            $value = $this->value->compile();
+            return "return {$value};";
+        }
+
+        return "return;";
+    }
 }

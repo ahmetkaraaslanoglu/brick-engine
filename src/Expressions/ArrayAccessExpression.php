@@ -45,4 +45,12 @@ class ArrayAccessExpression extends Node implements ExpressionInterface
 
         return new Value($context, ValueType::Null);
     }
+
+    public function compile(): string
+    {
+        $identifier = $this->identifier->value;
+        $index = $this->index->value;
+
+        return "{$identifier}[$index]";
+    }
 }

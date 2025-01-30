@@ -33,4 +33,21 @@ class ArrayElementExpression extends Node implements ExpressionInterface
             'value' => $value,
         ]);
     }
+
+    public function compile(): string
+    {
+        $prefix = '';
+        $key = $this->key ? $this->key->compile() : null;
+        $value = $this->value->compile();
+
+        if ($this->spread) {
+            $prefix .= '...';
+        }
+
+        if ($key) {
+            return "{$prefix}{$key} => $value";
+        }
+
+        return $prefix.$value;
+    }
 }

@@ -22,4 +22,9 @@ class IdentifierExpression extends Node implements ExpressionInterface
     {
         return new Value($context, ValueType::Identifier, $this->value);
     }
+
+    public function compile(): string
+    {
+        return "\$$this->value";
+    }
 }

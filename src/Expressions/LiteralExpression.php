@@ -58,4 +58,13 @@ class LiteralExpression extends Node implements ExpressionInterface
 
         throw new InvalidLiteralException($this->literal);
     }
+
+    public function compile(): string
+    {
+        if ($this->literal === 'STRING') {
+            return "\"$this->raw\"";
+        }
+
+        return $this->raw; // @todo update this to value
+    }
 }

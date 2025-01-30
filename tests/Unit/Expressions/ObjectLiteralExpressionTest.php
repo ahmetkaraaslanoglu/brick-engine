@@ -5,6 +5,13 @@ use IsaEken\BrickEngine\Expressions\ObjectLiteralExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 
+test('can be compile to php', function () {
+    $content = '{}';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())->toBe('(object) []');
+});
+
 test('can parse empty object', function () {
     $engine = new BrickEngine();
     $content = '{}';

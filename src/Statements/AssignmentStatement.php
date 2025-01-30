@@ -28,4 +28,9 @@ class AssignmentStatement extends Node implements StatementInterface
         $context->variables[$identifier] = $value;
         return new ExecutionResult($value);
     }
+
+    public function compile(): string
+    {
+        return "\${$this->left->value} = " . $this->right->compile() . ";";
+    }
 }

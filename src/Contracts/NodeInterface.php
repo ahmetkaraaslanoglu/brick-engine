@@ -9,4 +9,6 @@ use IsaEken\BrickEngine\Value;
 interface NodeInterface
 {
     public function run(Context $context): ExecutionResult|Value;
+
+    public function compile(): string;
 }

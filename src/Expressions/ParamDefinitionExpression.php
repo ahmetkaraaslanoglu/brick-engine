@@ -24,4 +24,14 @@ class ParamDefinitionExpression extends Node implements ExpressionInterface
     {
 
     }
+
+    public function compile(): string
+    {
+        if ($this->default_value) {
+            $defaultValue = $this->default_value->compile();
+            return "\${$this->identifier} = {$defaultValue}";
+        }
+
+        return "\${$this->identifier}";
+    }
 }

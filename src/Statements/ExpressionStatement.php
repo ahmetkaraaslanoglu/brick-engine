@@ -22,4 +22,9 @@ class ExpressionStatement extends Node implements StatementInterface
     {
         return new ExecutionResult($this->expression->run($context));
     }
+
+    public function compile(): string
+    {
+        // TODO: Implement compile() method.
+    }
 }

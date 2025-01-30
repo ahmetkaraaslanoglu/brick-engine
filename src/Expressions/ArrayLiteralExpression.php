@@ -47,4 +47,12 @@ class ArrayLiteralExpression extends Node implements ExpressionInterface
 
         return new Value($context, ValueType::Array, $elements);
     }
+
+    public function compile(): string
+    {
+        $elements = array_map(fn ($element) => $element->compile(), $this->elements);
+        $elements = implode(', ', $elements);
+
+        return "[$elements]";
+    }
 }

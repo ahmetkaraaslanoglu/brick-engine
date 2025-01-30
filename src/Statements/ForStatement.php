@@ -33,4 +33,9 @@ class ForStatement extends Node implements StatementInterface
 
         return $result;
     }
+
+    public function compile(): string
+    {
+        // TODO: Implement compile() method.
+    }
 }

@@ -29,4 +29,11 @@ class WhileStatement extends Node implements StatementInterface
 
         return $result ?? new ExecutionResult();
     }
+
+    public function compile(): string
+    {
+        $condition = $this->condition->compile();
+        $body = $this->body->compile();
+        return "while ($condition) $body";
+    }
 }

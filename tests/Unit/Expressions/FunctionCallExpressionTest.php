@@ -1,12 +1,25 @@
 <?php
 
 use IsaEken\BrickEngine\BrickEngine;
-use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Expressions\FunctionCallExpression;
 use IsaEken\BrickEngine\Lexers\Lexer;
 use IsaEken\BrickEngine\Parser;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
+
+test('can be compile to php', function () {
+    $content = 'test()';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())
+        ->toBe('test()');
+
+    $content = 'test(1, 2, 3)';
+    $parser = new Parser(new Lexer(new BrickEngine(), $content)->run(), $content);
+
+    expect($parser->parseFactor()->compile())
+        ->toBe('test(1, 2, 3)');
+});
 
 test('can parse function call without arguments', function () {
     $emptyContext = new Context();

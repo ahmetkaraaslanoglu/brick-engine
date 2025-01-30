@@ -44,4 +44,13 @@ class FunctionCallExpression extends Node implements ExpressionInterface
 
         return $value;
     }
+
+    public function compile(): string
+    {
+        $callee = $this->callee;
+        $arguments = array_map(fn ($argument) => $argument->compile(), $this->arguments);
+        $arguments = implode(', ', $arguments);
+
+        return "$callee($arguments)";
+    }
 }
