@@ -40,4 +40,11 @@ class BrickEngine
 
         return $runtime->run();
     }
+
+    public function compile(string $content): string
+    {
+        return new Parser(new Lexer($this, $content)->run(), $content)
+            ->parseProgram()
+            ->compile();
+    }
 }
