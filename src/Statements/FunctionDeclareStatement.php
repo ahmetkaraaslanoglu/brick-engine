@@ -4,6 +4,7 @@ namespace IsaEken\BrickEngine\Statements;
 
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 
@@ -19,8 +20,10 @@ class FunctionDeclareStatement extends Node implements StatementInterface
         ]);
     }
 
-    public function run(Context $context): ExecutionResult
+    public function run(Runtime $runtime, Context $context): ExecutionResult
     {
+        parent::run($runtime, $context);
+
         $context->functions[$this->callee] = function (...$arguments) use ($context) {
             foreach ($this->arguments as $index => $argument) {
                 if ($arguments[$index] ?? false) {

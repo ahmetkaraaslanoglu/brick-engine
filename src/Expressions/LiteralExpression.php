@@ -5,7 +5,7 @@ namespace IsaEken\BrickEngine\Expressions;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Exceptions\InvalidLiteralException;
-use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 use IsaEken\BrickEngine\Value;
@@ -22,8 +22,10 @@ class LiteralExpression extends Node implements ExpressionInterface
         ]);
     }
 
-    public function run(Context $context): Value
+    public function run(Runtime $runtime, Context $context): Value
     {
+        parent::run($runtime, $context);
+
         if ($this->literal === 'NUMBER') {
             return new Value(
                 context: $context,

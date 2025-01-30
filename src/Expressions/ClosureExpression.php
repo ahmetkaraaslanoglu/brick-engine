@@ -6,6 +6,7 @@ use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Node;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Value;
 
@@ -21,8 +22,10 @@ class ClosureExpression extends Node implements ExpressionInterface
         ]);
     }
 
-    public function run(Context $context): Value
+    public function run(Runtime $runtime, Context $context): Value
     {
+        parent::run($runtime, $context);
+
         $closure = function (...$arguments) use ($context) {
             foreach ($this->arguments as $index => $argument) {
                 if ($arguments[$index] ?? false) {

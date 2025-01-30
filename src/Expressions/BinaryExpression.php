@@ -7,7 +7,7 @@ use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Exceptions\InvalidLeftSideTargetException;
 use IsaEken\BrickEngine\Exceptions\UnsupportedException;
 use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
-use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 use IsaEken\BrickEngine\Value;
@@ -24,8 +24,10 @@ class BinaryExpression extends Node implements ExpressionInterface
         ]);
     }
 
-    public function run(Context $context): Value
+    public function run(Runtime $runtime, Context $context): Value
     {
+        parent::run($runtime, $context);
+
         $operator = $this->operator;
 
         $left = $this->resolveValue($context, 'left');

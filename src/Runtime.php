@@ -8,6 +8,8 @@ use IsaEken\BrickEngine\Runtime\Context;
 
 class Runtime
 {
+    public int $ticks = 0;
+
     public function __construct(
         public StatementInterface $program,
         public Context $context = new Context,
@@ -18,9 +20,10 @@ class Runtime
     public function run(): ExecutionResult
     {
         try {
-            return $this->program->run(
+            $a = $this->program->run(
                 $this->context,
             );
+            dd($a, $this->ticks);
         } catch (IgnorableException $ignorableException) {
             dump($ignorableException);
         }

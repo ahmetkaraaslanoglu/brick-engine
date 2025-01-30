@@ -5,7 +5,7 @@ namespace IsaEken\BrickEngine\Expressions;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Exceptions\VariableNotFoundException;
-use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 use IsaEken\BrickEngine\Value;
@@ -20,8 +20,10 @@ class ArrayLiteralExpression extends Node implements ExpressionInterface
         ]);
     }
 
-    public function run(Context $context): Value
+    public function run(Runtime $runtime, Context $context): Value
     {
+        parent::run($runtime, $context);
+
         $elements = [];
 
         foreach ($this->elements as $element) {

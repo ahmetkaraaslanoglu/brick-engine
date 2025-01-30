@@ -6,6 +6,7 @@ use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\ExecutionResult;
 use IsaEken\BrickEngine\Expressions\IdentifierExpression;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 
@@ -20,8 +21,10 @@ class AssignmentStatement extends Node implements StatementInterface
         ]);
     }
 
-    public function run(Context $context): ExecutionResult
+    public function run(Runtime $runtime, Context $context): ExecutionResult
     {
+        parent::run($runtime, $context);
+
         $this->assertType($this->left, IdentifierExpression::class);
         $identifier = $this->left->value;
         $value = $this->right->run($context);

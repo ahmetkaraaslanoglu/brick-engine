@@ -4,6 +4,7 @@ namespace IsaEken\BrickEngine;
 
 use IsaEken\BrickEngine\Contracts\NodeInterface;
 use IsaEken\BrickEngine\Exceptions\InternalCriticalException;
+use IsaEken\BrickEngine\Runtime\Context;
 
 abstract class Node implements NodeInterface
 {
@@ -57,5 +58,12 @@ abstract class Node implements NodeInterface
         }
 
         return true;
+    }
+
+    public function run(Runtime $runtime, Context $context): ExecutionResult|Value
+    {
+        $runtime->ticks++;
+
+        return new ExecutionResult();
     }
 }

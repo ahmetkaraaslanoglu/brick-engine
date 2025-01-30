@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Statements;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 
@@ -20,8 +21,10 @@ class IfStatement extends Node implements StatementInterface
         ]);
     }
 
-    public function run(Context $context): ExecutionResult
+    public function run(Runtime $runtime, Context $context): ExecutionResult
     {
+        parent::run($runtime, $context);
+
         $condition = $this->condition->run($context)->isTruthy();
 
         if ($condition) {

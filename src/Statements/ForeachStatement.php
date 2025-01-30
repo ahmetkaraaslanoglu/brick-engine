@@ -7,6 +7,7 @@ use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\Enums\ValueType;
 use IsaEken\BrickEngine\Exceptions\InvalidForeachTargetException;
 use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 use IsaEken\BrickEngine\Value;
@@ -23,8 +24,10 @@ class ForeachStatement extends Node implements StatementInterface
         ]);
     }
 
-    public function run(Context $context): ExecutionResult
+    public function run(Runtime $runtime, Context $context): ExecutionResult
     {
+        parent::run($runtime, $context);
+
         $left = $this->left->run($context);
         $right = $this->right->run($context);
 

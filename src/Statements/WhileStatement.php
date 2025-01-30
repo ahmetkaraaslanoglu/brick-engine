@@ -5,6 +5,7 @@ namespace IsaEken\BrickEngine\Statements;
 use IsaEken\BrickEngine\Contracts\ExpressionInterface;
 use IsaEken\BrickEngine\Contracts\StatementInterface;
 use IsaEken\BrickEngine\ExecutionResult;
+use IsaEken\BrickEngine\Runtime;
 use IsaEken\BrickEngine\Runtime\Context;
 use IsaEken\BrickEngine\Node;
 
@@ -19,8 +20,10 @@ class WhileStatement extends Node implements StatementInterface
         ]);
     }
 
-    public function run(Context $context): ExecutionResult
+    public function run(Runtime $runtime, Context $context): ExecutionResult
     {
+        parent::run($runtime, $context);
+
         $result = null;
 
         while ($this->condition->run($context)->isTruthy()) {
