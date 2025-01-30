@@ -92,8 +92,8 @@ class Value
             ValueType::String => strval($value->data),
             ValueType::Array => (function () use ($value) {
                 $array = [];
-                foreach ($value->data as $item) {
-                    $array[] = self::real($item);
+                foreach ($value->data as $key => $item) {
+                    $array[$key] = self::real($item);
                 }
 
                 return $array;
