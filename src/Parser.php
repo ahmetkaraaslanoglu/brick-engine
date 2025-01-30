@@ -14,6 +14,7 @@ use IsaEken\BrickEngine\Expressions\ClosureExpression;
 use IsaEken\BrickEngine\Expressions\FunctionCallExpression;
 use IsaEken\BrickEngine\Expressions\IdentifierExpression;
 use IsaEken\BrickEngine\Expressions\LiteralExpression;
+use IsaEken\BrickEngine\Expressions\ObjectAccessExpression;
 use IsaEken\BrickEngine\Expressions\ObjectLiteralExpression;
 use IsaEken\BrickEngine\Expressions\ParamDefinitionExpression;
 use IsaEken\BrickEngine\Expressions\UnaryExpression;
@@ -314,6 +315,28 @@ class Parser
                 $node = new ArrayAccessExpression(
                     identifier: $node,
                     index: $indexExpression,
+                );
+            }
+        }
+
+        while (!$this->isEof() && $this->token->token === 'DOT') {
+            $this->eat('DOT');
+            $key = $this->token->value;
+            $this->eat('IDENTIFIER');
+
+            $node = new ObjectAccessExpression(
+                identifier: $node,
+                key: $key,
+            );
+
+            while (!$this->isEof() && $this->token->token === 'LEFT_PARENTHESIS') {
+                $this->eat('LEFT_PARENTHESIS');
+                $arguments = $this->parseArguments();
+                $this->eat('RIGHT_PARENTHESIS');
+
+                $node = new FunctionCallExpression(
+                    $node,
+                    $arguments,
                 );
             }
         }

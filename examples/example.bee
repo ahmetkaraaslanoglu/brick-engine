@@ -45,6 +45,13 @@ an_object = {
         return 'hello ' + name + '!';
     },
 };
-println(an_object);
+println(an_object.baz('İsa Eken'));
+
+an_array = [
+    'hello world',
+    function (name) { return 'hi, ' + name; }
+];
+my_closure = an_array[1];
+println(my_closure('sa'));
 
 return 0;
