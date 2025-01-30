@@ -331,7 +331,11 @@ class Parser
 
             while (!$this->isEof() && $this->token->token === 'LEFT_PARENTHESIS') {
                 $this->eat('LEFT_PARENTHESIS');
-                $arguments = $this->parseArguments();
+                if ($this->token->token !== 'RIGHT_PARENTHESIS') {
+                    $arguments = $this->parseArguments();
+                } else {
+                    $arguments = [];
+                }
                 $this->eat('RIGHT_PARENTHESIS');
 
                 $node = new FunctionCallExpression(
