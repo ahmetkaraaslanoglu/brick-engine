@@ -10,6 +10,8 @@ class Runtime
 {
     public int $ticks = 0;
 
+    public int $tickLimit = 10_000;
+
     public function __construct(
         public StatementInterface $program,
         public Context $context = new Context,

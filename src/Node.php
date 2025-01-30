@@ -63,6 +63,9 @@ abstract class Node implements NodeInterface
     public function run(Runtime $runtime, Context $context): ExecutionResult|Value
     {
         $runtime->ticks++;
+        if ($runtime->tickLimit < $runtime->ticks) {
+            throw new InternalCriticalException("Tick limit reached");
+        }
 
         return new ExecutionResult();
     }
