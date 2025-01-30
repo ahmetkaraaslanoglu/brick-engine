@@ -36,6 +36,11 @@ class ForStatement extends Node implements StatementInterface
 
     public function compile(): string
     {
-        // TODO: Implement compile() method.
+        $init = $this->init->compile();
+        $condition = $this->condition->compile();
+        $update = $this->update->compile();
+        $body = $this->body->compile();
+
+        return "for ($init; $condition; $update) $body";
     }
 }

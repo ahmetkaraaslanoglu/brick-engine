@@ -25,6 +25,6 @@ class ExpressionStatement extends Node implements StatementInterface
 
     public function compile(): string
     {
-        // TODO: Implement compile() method.
+        return $this->expression->compile() . ';';
     }
 }
